@@ -14,3 +14,6 @@ Design the database with an open architecture so that it can be expanded to e-co
 - Hibernate
 - MySQL
 - CORS
+
+# Database
+![alt text](image.png)
