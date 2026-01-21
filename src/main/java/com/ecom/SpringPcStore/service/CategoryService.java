@@ -1,6 +1,6 @@
 package com.ecom.SpringPcStore.service;
 
-import com.ecom.SpringPcStore.model.Category;
+import com.ecom.SpringPcStore.entity.Category;
 import com.ecom.SpringPcStore.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.ecom.SpringPcStore.service;
 
-import com.ecom.SpringPcStore.model.Product;
+import com.ecom.SpringPcStore.entity.Product;
 import com.ecom.SpringPcStore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 

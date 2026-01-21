@@ -1,6 +1,6 @@
 package com.ecom.SpringPcStore.controller;
 
-import com.ecom.SpringPcStore.model.Product;
+import com.ecom.SpringPcStore.entity.Product;
 import com.ecom.SpringPcStore.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

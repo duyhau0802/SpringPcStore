@@ -1,6 +1,6 @@
 package com.ecom.SpringPcStore.controller;
 
-import com.ecom.SpringPcStore.model.Category;
+import com.ecom.SpringPcStore.entity.Category;
 import com.ecom.SpringPcStore.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
