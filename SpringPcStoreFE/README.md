@@ -1,16 +1,65 @@
-# React + Vite
+<h2 align="center">E-Commerce Template</h2>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+ Built with React JS, Bootstrap 5
+  <br>
+  <a href="https://e-commerce-template.surge.sh/" target="_blank"><strong>Demo »</strong></a>
+  <br>
+  <br>
 
-Currently, two official plugins are available:
+## E-Commerce Template
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Built with React JS and Bootstrap 5
 
-## React Compiler
+## Table of contents
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Quick start](#quick-start)
+- [What's included](#whats-included)
+- [Thanks](#thanks)
+- [Copyright and license](#copyright-and-license)
 
-## Expanding the ESLint configuration
+## Quick start
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Several quick start options are available:
+
+- [Download the latest branch](https://github.com/bhaumikpatel/E-Commerce-Template)
+- Clone the repo: `git clone https://github.com/bhaumikpatel/E-Commerce-Template.git`
+- Install with [npm](https://www.npmjs.com/): `npm install`
+- Runs the app in the development mode `npm start`
+- Builds the app for production to the `build` folder `npm run build`
+
+## What's included
+
+- Sign Up
+- Sign In
+- Forgot Password
+- Home Page
+- Product List (List/Grid View)
+- Product Detail
+- Cart
+- Checkout
+- Invoice
+- My Account (Change Password, Setting, Saved Card)
+- Star Zone Page
+- Orders
+- Wishlist's
+- Notification
+- Support
+- Contact Us
+- Blog
+- Blog Detail Page
+- Error Page (404, 500)
+
+## Thanks
+
+<a href="https://www.getbootstrap.com/" title="Bootstrap" target="_blank">
+  <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap Logo">
+</a>
+<a href="https://reactjs.org/" title="React JS" target="_blank"><img src="https://skillicons.dev/icons?i=react" alt="React Logo">
+</a>
+<a href="https://fontawesome.com/" title="Font Awesome" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Font_Awesome_logomark_blue.svg" alt="Font Awesome Logo" width="48" height="48">
+</a>
+  
+## Copyright and license
+
+Code released under the [MIT License](https://github.com/twbs/bootstrap/blob/main/LICENSE). Docs released under [Creative Commons](https://creativecommons.org/licenses/by/3.0/).
