@@ -108,6 +108,12 @@ public class UserService implements UserDetailsService {
     // =======================
     // HELPER METHODS
     // =======================
+    public Long getUserIdByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+        return user.getId();
+    }
+
     private UserResponse convertToResponse(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
