@@ -1,22 +1,22 @@
 package com.ecom.SpringPcStore.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.Set;
+import lombok.*;
 
 @Entity
-@Data
+@Table(name = "role")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
-    
-    @Column(nullable = false, length = 50)
+
+    @Column(nullable = false, unique = true, length = 50)
     private String name;
-    
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<UserRole> userRoles;
 }

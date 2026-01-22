@@ -1,33 +1,35 @@
 package com.ecom.SpringPcStore.controller;
 
-import com.ecom.SpringPcStore.dto.request.LoginRequestDto;
-import com.ecom.SpringPcStore.dto.request.RegisterRequestDto;
-import com.ecom.SpringPcStore.dto.response.LoginResponseDto;
-import com.ecom.SpringPcStore.dto.response.RegisterResponseDto;
-import com.ecom.SpringPcStore.service.AuthenticationService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.ecom.SpringPcStore.dto.request.LoginRequest;
+import com.ecom.SpringPcStore.dto.request.RegisterRequest;
+import com.ecom.SpringPcStore.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
-        RegisterResponseDto response = authenticationService.register(registerRequestDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
+    // =======================
+    // LOGIN
+    // =======================
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        LoginResponseDto response = authenticationService.login(loginRequestDto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
+    }
+
+    // =======================
+    // REGISTER
+    // =======================
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        authService.register(request);
+        return ResponseEntity.ok("Register successfully");
     }
 }
