@@ -2,6 +2,7 @@ package com.ecom.SpringPcStore.service;
 
 import com.ecom.SpringPcStore.dto.request.LoginRequest;
 import com.ecom.SpringPcStore.dto.request.RegisterRequest;
+import com.ecom.SpringPcStore.dto.response.AuthResponse;
 import com.ecom.SpringPcStore.entity.Role;
 import com.ecom.SpringPcStore.entity.User;
 import com.ecom.SpringPcStore.entity.UserRole;
@@ -13,6 +14,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +54,7 @@ public class AuthService {
         userRoleRepository.save(ur);
     }
 
-    public String login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
@@ -59,6 +63,13 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
+        
+        // Extract roles from user
+        Set<String> roles = user.getUserRoles().stream()
+                .map(userRole -> userRole.getRole().getName())
+                .collect(Collectors.toSet());
+        
+        return new AuthResponse(token, user.getId(), user.getUsername(), user.getEmail(), roles);
     }
 }

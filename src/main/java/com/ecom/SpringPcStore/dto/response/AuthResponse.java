@@ -1,11 +1,18 @@
 package com.ecom.SpringPcStore.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter @Setter
+import java.util.Set;
+
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
     private String token;
+    private Long userId;
+    private String username;
+    private String email;
+    private Set<String> roles;
 }

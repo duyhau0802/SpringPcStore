@@ -2,6 +2,7 @@ package com.ecom.SpringPcStore.controller;
 
 import com.ecom.SpringPcStore.dto.request.LoginRequest;
 import com.ecom.SpringPcStore.dto.request.RegisterRequest;
+import com.ecom.SpringPcStore.dto.response.AuthResponse;
 import com.ecom.SpringPcStore.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,9 @@ public class AuthController {
     // LOGIN
     // =======================
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        AuthResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
     // =======================

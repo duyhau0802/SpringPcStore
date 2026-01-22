@@ -1,11 +1,17 @@
 package com.ecom.SpringPcStore.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
-public class UserResponseDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponse {
+    
     private Long id;
     private String username;
     private String email;
@@ -13,4 +19,5 @@ public class UserResponseDto {
     private String phoneNumber;
     private String status;
     private LocalDateTime createdAt;
+    private Set<String> roles;
 }
