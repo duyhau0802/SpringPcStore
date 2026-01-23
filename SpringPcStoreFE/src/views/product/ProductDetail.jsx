@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchProductDetail } from "../../redux/actions/productDetailActions";
+import { fetchReviewsByProductId } from "../../redux/actions/reviewActions";
+import { fetchProductsByCategory } from "../../redux/actions/productActions";
 import { lazy } from "react";
 import { data } from "../../data";
 import TECH_PLACEHOLDERS from "../../utils/imagePlaceholders";
 import RatingStars from "../../components/RatingStars";
-import { formatPrice, calculateOriginalPrice, calculateDiscountPrice } from "../../utils/currencyUtils";
+import { formatPrice, calculateOriginalPrice, calculateDiscountPrice, qualifiesForFreeShipping } from "../../utils/currencyUtils";
 
 const CardFeaturedProduct = lazy(() =>
   import("../../components/card/CardFeaturedProduct")
@@ -35,6 +37,17 @@ class ProductDetail extends Component {
     const productId = this.getProductIdFromUrl();
     if (productId) {
       this.props.fetchProductDetail(productId);
+      this.props.fetchReviewsByProductId(productId);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // Fetch related products when product data is loaded
+    if (this.props.productDetail.product && !prevProps.productDetail.product) {
+      const product = this.props.productDetail.product;
+      if (product.categoryId) {
+        this.props.fetchProductsByCategory(product.categoryId);
+      }
     }
   }
 
@@ -261,6 +274,63 @@ class ProductDetail extends Component {
     );
   };
 
+  getRelatedProducts = () => {
+    const { product } = this.props.productDetail;
+    const { products } = this.props.products;
+    
+    console.log('ProductDetail - getRelatedProducts:');
+    console.log('  Current product:', product);
+    console.log('  Available products:', products);
+    
+    if (!product || !products || !products.length) {
+      console.log('  No product or products data');
+      return [];
+    }
+    
+    // Filter products from same category, exclude current product
+    const relatedProducts = products
+      .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
+      .slice(0, 4) // Limit to 4 related products
+      .map(p => this.formatProduct(p));
+    
+    console.log('  Related products:', relatedProducts);
+    return relatedProducts;
+  };
+
+  getProductImage = (product) => {
+    const images = product.productImages || [];
+    if (images.length > 0) {
+      const mainImage = images.find(img => img.isMain) || images[0];
+      return mainImage.imageUrl;
+    }
+    return TECH_PLACEHOLDERS.getPlaceholderByCategory(product.category?.name);
+  };
+
+  formatProduct = (product) => {
+    // Transform backend product data to match frontend component expectations
+    return {
+      id: product.id,
+      sku: `PC-${product.id}`,
+      link: `/product/detail?id=${product.id}`,
+      name: product.name,
+      img: this.getProductImage(product),
+      price: formatPrice(product.price),
+      originPrice: calculateOriginalPrice(product.price, 10), // 10% original price markup
+      discountPrice: calculateDiscountPrice(product.price, 10), // 10% discount
+      discountPercentage: 10,
+      isNew: true,
+      isHot: product.inventory?.quantity > 0 && product.inventory?.quantity < 5,
+      star: Math.round(product.averageRating || 0), // Use backend rating
+      isFreeShipping: qualifiesForFreeShipping(product.price, 100), // Free shipping for orders over $100
+      description: product.description || "High-quality computer product for your needs",
+      category: product.category?.name || "Computer Components",
+      brand: product.brand?.name || "Tech Brand",
+      stock: product.inventory?.quantity || 0,
+      reviewCount: product.reviewCount || 0,
+      averageRating: product.averageRating || 0
+    };
+  };
+
   render() {
     const { loading, error, product } = this.props.productDetail;
 
@@ -356,9 +426,10 @@ class ProductDetail extends Component {
                     role="tabpanel"
                     aria-labelledby="nav-randr-tab"
                   >
-                    {Array.from({ length: 5 }, (_, key) => (
-                      <RatingsReviews key={key} />
-                    ))}
+                    <RatingsReviews 
+                      product={product}
+                      reviews={this.props.reviews.reviews[product.id] || []}
+                    />
                   </div>
                   <div
                     className="tab-pane fade"
@@ -385,7 +456,10 @@ class ProductDetail extends Component {
             </div>
           </div>
           <div className="col-md-4">
-            <CardFeaturedProduct data={data.products} />
+            <CardFeaturedProduct 
+              data={this.getRelatedProducts()} 
+              title="Related Products"
+            />
             <CardServices />
           </div>
         </div>
@@ -395,7 +469,9 @@ class ProductDetail extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  productDetail: state.productDetail
+  productDetail: state.productDetail,
+  reviews: state.reviews,
+  products: state.products
 });
 
-export default connect(mapStateToProps, { fetchProductDetail })(ProductDetail);
+export default connect(mapStateToProps, { fetchProductDetail, fetchReviewsByProductId, fetchProductsByCategory })(ProductDetail);
