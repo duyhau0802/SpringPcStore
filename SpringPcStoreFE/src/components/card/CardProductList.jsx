@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import RatingStars from "../RatingStars";
 
 const CardProductList = (props) => {
   const product = props.data;
@@ -20,24 +21,12 @@ const CardProductList = (props) => {
             )}
             {product.isHot && <span className="badge bg-danger me-2">Hot</span>}
 
-            <div>
-              {product.star > 0 &&
-                Array.from({ length: 5 }, (_, key) => {
-                  if (key <= product.star)
-                    return (
-                      <i
-                        className="bi bi-star-fill text-warning me-1"
-                        key={key}
-                      />
-                    );
-                  else
-                    return (
-                      <i
-                        className="bi bi-star-fill text-secondary me-1"
-                        key={key}
-                      />
-                    );
-                })}
+            <div className="mt-2">
+              <RatingStars 
+                rating={product.averageRating || product.star || 0} 
+                reviewCount={product.reviewCount || 0}
+                size="small"
+              />
             </div>
             {product.description &&
               product.description.includes("|") === false && (

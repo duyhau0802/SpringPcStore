@@ -1,4 +1,7 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import { formatPriceDisplay } from "../../utils/currencyUtils";
+import RatingStars from "../RatingStars";
 
 const CardProductGrid = (props) => {
   const product = props.data;
@@ -20,11 +23,12 @@ const CardProductGrid = (props) => {
           className={`rounded position-absolute p-2 bg-warning  ms-2 small ${
             product.isNew ? "mt-5" : "mt-2"
           }`}
+          style={{ display: 'none' }}
         >
           -
           {product.discountPercentage > 0
             ? product.discountPercentage + "%"
-            : "$" + product.discountPrice}
+            : "$" + formatPriceDisplay(product.discountPrice)}
         </span>
       )}
       <div className="card-body">
@@ -34,15 +38,17 @@ const CardProductGrid = (props) => {
           </Link>
         </h6>
         <div className="my-2">
-          <span className="fw-bold h5">${product.price}</span>
+          <span className="fw-bold h5">${formatPriceDisplay(product.price)}</span>
           {product.originPrice > 0 && (
-            <del className="small text-muted ms-2">${product.originPrice}</del>
+            <del className="small text-muted ms-2">${formatPriceDisplay(product.originPrice)}</del>
           )}
-          <span className="ms-2">
-            {Array.from({ length: product.star }, (_, key) => (
-              <i className="bi bi-star-fill text-warning me-1" key={key} />
-            ))}
-          </span>
+          <div className="mt-2">
+            <RatingStars 
+              rating={product.averageRating || product.star || 0} 
+              reviewCount={product.reviewCount || 0}
+              size="small"
+            />
+          </div>
         </div>
         <div className="btn-group  d-flex" role="group">
           <button

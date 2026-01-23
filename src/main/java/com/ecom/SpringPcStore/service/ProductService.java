@@ -28,10 +28,14 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
     private final InventoryRepository inventoryRepository;
+    private final ReviewRepository reviewRepository;
 
-    public Page<ProductResponse> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable)
+    public Page<ProductResponse> getAllProducts(Long storeId, String status, Pageable pageable) {
+        System.out.println("Fetching products with storeId: " + storeId + ", status: " + status);
+        Page<ProductResponse> products = productRepository.searchProducts(null, null, null, storeId, status, null, null, null, pageable)
                 .map(this::convertToResponse);
+        System.out.println("Found " + products.getTotalElements() + " products");
+        return products;
     }
 
     public ProductResponse getProductById(Long id) {
@@ -47,8 +51,9 @@ public class ProductService {
     }
 
     public Page<ProductResponse> searchProducts(String name, Long categoryId, Long brandId, 
-                                              Long storeId, String status, Pageable pageable) {
-        return productRepository.searchProducts(name, categoryId, brandId, storeId, status, pageable)
+                                              Long storeId, String status, Double minRating, 
+                                              Double minPrice, Double maxPrice, Pageable pageable) {
+        return productRepository.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable)
                 .map(this::convertToResponse);
     }
 
@@ -236,6 +241,20 @@ public class ProductService {
             inventoryResponse.setQuantity(inventory.getQuantity());
             inventoryResponse.setUpdatedAt(inventory.getUpdatedAt());
             response.setInventory(inventoryResponse);
+        }
+
+        // Calculate rating information
+        List<Review> reviews = reviewRepository.findByProductId(product.getId());
+        if (!reviews.isEmpty()) {
+            double averageRating = reviews.stream()
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0.0);
+            response.setAverageRating(averageRating);
+            response.setReviewCount(reviews.size());
+        } else {
+            response.setAverageRating(0.0);
+            response.setReviewCount(0);
         }
 
         return response;

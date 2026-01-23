@@ -10,22 +10,25 @@ INSERT INTO role (id, name) VALUES
 -- =========================
 -- 2. USER
 -- =========================
-INSERT INTO user (id, username, email, password, full_name, phone_number, status) VALUES
-                                                                                      (1, 'admin', 'admin@test.com', 'hashed_password', 'Admin User', '0900000001', 'ACTIVE'),
-                                                                                      (2, 'john', 'john@test.com', 'hashed_password', 'John Doe', '0900000002', 'ACTIVE');
+-- Note: Users are now inserted in tech_store_sample_data.sql
+-- INSERT INTO user (id, username, email, password, full_name, phone_number, status) VALUES
+--                                                                                      (1, 'admin', 'admin@test.com', 'hashed_password', 'Admin User', '0900000001', 'ACTIVE'),
+--                                                                                      (2, 'john', 'john@test.com', 'hashed_password', 'John Doe', '0900000002', 'ACTIVE');
 
 -- =========================
 -- 3. USER_ROLE
 -- =========================
-INSERT INTO user_role (user_id, role_id) VALUES
-                                             (1, 1),
-                                             (2, 2);
+-- Note: User roles are now inserted in tech_store_sample_data.sql
+-- INSERT INTO user_role (user_id, role_id) VALUES
+--                                              (1, 1),
+--                                              (2, 2);
 
 -- =========================
 -- 4. STORE
 -- =========================
-INSERT INTO store (id, name, description, owner_id, status) VALUES
-    (1, 'Tech Store', 'Electronics & Gadgets', 1, 'ACTIVE');
+-- Note: Store is now inserted in tech_store_sample_data.sql
+-- INSERT INTO store (id, name, description, owner_id, status) VALUES
+--     (1, 'Tech Store', 'Electronics & Gadgets', 1, 'ACTIVE');
 
 -- =========================
 -- 5. CATEGORY

@@ -19,9 +19,12 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<CategoryResponse> getAllCategories() {
-        return categoryRepository.findAll().stream()
+        System.out.println("Fetching all categories...");
+        List<CategoryResponse> categories = categoryRepository.findAll().stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+        System.out.println("Found " + categories.size() + " categories");
+        return categories;
     }
 
     public CategoryResponse getCategoryById(Long id) {

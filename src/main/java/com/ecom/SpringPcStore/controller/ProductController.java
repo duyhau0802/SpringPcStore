@@ -23,8 +23,11 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> getAllProducts(Pageable pageable) {
-        Page<ProductResponse> products = productService.getAllProducts(pageable);
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+            @RequestParam(required = false) Long storeId,
+            @RequestParam(required = false) String status,
+            Pageable pageable) {
+        Page<ProductResponse> products = productService.getAllProducts(storeId, status, pageable);
         return ResponseEntity.ok(products);
     }
 
@@ -47,8 +50,11 @@ public class ProductController {
             @RequestParam(required = false) Long brandId,
             @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) String status,
+            @RequestParam(required = false) Double minRating,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Double minPrice,
             Pageable pageable) {
-        Page<ProductResponse> products = productService.searchProducts(name, categoryId, brandId, storeId, status, pageable);
+        Page<ProductResponse> products = productService.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(products);
     }
 

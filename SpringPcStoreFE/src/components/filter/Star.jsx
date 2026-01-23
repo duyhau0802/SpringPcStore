@@ -1,4 +1,30 @@
-const FilterStar = (props) => {
+import React, { useState } from "react";
+
+const FilterStar = ({ onFilterChange }) => {
+  const [selectedRating, setSelectedRating] = useState(null);
+
+  const handleRatingChange = (rating) => {
+    setSelectedRating(rating === selectedRating ? null : rating);
+    if (onFilterChange) {
+      onFilterChange({ 
+        minRating: rating === selectedRating ? null : rating 
+      });
+    }
+  };
+
+  const renderStars = (filledStars) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <i 
+          key={i} 
+          className={`bi bi-star${i <= filledStars ? '-fill text-warning' : '-fill text-secondary'} me-1 mb-2`} 
+        />
+      );
+    }
+    return stars;
+  };
+
   return (
     <div className="card mb-3">
       <div
@@ -8,102 +34,92 @@ const FilterStar = (props) => {
         aria-expanded="true"
         aria-controls="filterStar"
       >
-        Customer Review
+        Customer Rating
       </div>
       <div className="card-body show" id="filterStar">
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault5"
+            name="ratingFilter"
+            id="rating5"
+            checked={selectedRating === 5}
+            onChange={() => handleRatingChange(5)}
           />
           <label
             className="form-check-label"
-            htmlFor="flexRadioDefault5"
-            aria-label="Star"
+            htmlFor="rating5"
           >
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
+            {renderStars(5)}
+            <span className="ms-2">5 Stars</span>
           </label>
         </div>
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault4"
+            name="ratingFilter"
+            id="rating4"
+            checked={selectedRating === 4}
+            onChange={() => handleRatingChange(4)}
           />
           <label
             className="form-check-label"
-            htmlFor="flexRadioDefault4"
-            aria-label="Star"
+            htmlFor="rating4"
           >
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
+            {renderStars(4)}
+            <span className="ms-2">4 Stars & Up</span>
           </label>
         </div>
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault3"
+            name="ratingFilter"
+            id="rating3"
+            checked={selectedRating === 3}
+            onChange={() => handleRatingChange(3)}
           />
           <label
             className="form-check-label"
-            htmlFor="flexRadioDefault3"
-            aria-label="Star"
+            htmlFor="rating3"
           >
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
+            {renderStars(3)}
+            <span className="ms-2">3 Stars & Up</span>
           </label>
         </div>
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault2"
+            name="ratingFilter"
+            id="rating2"
+            checked={selectedRating === 2}
+            onChange={() => handleRatingChange(2)}
           />
           <label
             className="form-check-label"
-            htmlFor="flexRadioDefault2"
-            aria-label="Star"
+            htmlFor="rating2"
           >
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
+            {renderStars(2)}
+            <span className="ms-2">2 Stars & Up</span>
           </label>
         </div>
         <div className="form-check">
           <input
             className="form-check-input"
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault1"
+            name="ratingFilter"
+            id="rating1"
+            checked={selectedRating === 1}
+            onChange={() => handleRatingChange(1)}
           />
           <label
             className="form-check-label"
-            htmlFor="flexRadioDefault1"
-            aria-label="Star"
+            htmlFor="rating1"
           >
-            <i className="bi bi-star-fill text-warning me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
-            <i className="bi bi-star-fill text-secondary me-1 mb-2" />
+            {renderStars(1)}
+            <span className="ms-2">1 Star & Up</span>
           </label>
         </div>
       </div>

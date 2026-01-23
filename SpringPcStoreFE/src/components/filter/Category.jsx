@@ -1,7 +1,66 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { categoryAPI } from "../../services/categoryAPI";
 
-const FilterCategory = (props) => {
+const FilterCategory = ({ onFilterChange }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await categoryAPI.getAllCategories();
+      setCategories(response.data || []);
+    } catch (error) {
+      console.error('Failed to load categories:', error);
+      // Fallback to tech categories if API fails
+      setCategories([
+        { id: 1, name: "Laptops" },
+        { id: 2, name: "Desktop PCs" },
+        { id: 3, name: "Monitors" },
+        { id: 4, name: "Graphics Cards" },
+        { id: 5, name: "Processors" },
+        { id: 6, name: "Memory (RAM)" },
+        { id: 7, name: "Storage (SSD/HDD)" },
+        { id: 8, name: "Motherboards" },
+        { id: 9, name: "Power Supplies" },
+        { id: 10, name: "Computer Cases" },
+        { id: 11, name: "Cooling Systems" },
+        { id: 12, name: "Gaming Peripherals" }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
+    if (onFilterChange) {
+      onFilterChange({ 
+        categoryId: categoryId === selectedCategory ? null : categoryId 
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="card mb-3">
+        <div className="card-header fw-bold text-uppercase">
+          Categories
+        </div>
+        <div className="card-body text-center">
+          <div className="spinner-border spinner-border-sm" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="card mb-3 accordion">
       <div
@@ -17,36 +76,23 @@ const FilterCategory = (props) => {
         className="list-group list-group-flush show"
         id="filterCategory"
       >
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            Clothing
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            Leather Bag
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            Trausers
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            Sweater & Cardigans
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            High Heels
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link to="/" className="text-decoration-none stretched-link">
-            Coats & Jackets
-          </Link>
-        </li>
+        {categories.map((category) => (
+          <li key={category.id} className="list-group-item">
+            <button
+              className={`btn btn-link text-decoration-none stretched-link w-100 text-start ${
+                selectedCategory === category.id ? 'text-primary fw-bold' : ''
+              }`}
+              onClick={() => handleCategoryClick(category.id)}
+            >
+              {category.name}
+            </button>
+          </li>
+        ))}
+        {categories.length === 0 && (
+          <li className="list-group-item text-muted">
+            No categories available
+          </li>
+        )}
       </ul>
     </div>
   );

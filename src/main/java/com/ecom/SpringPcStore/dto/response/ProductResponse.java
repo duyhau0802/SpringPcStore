@@ -23,6 +23,10 @@ public class ProductResponse {
     private String description;
     private LocalDateTime createdAt;
     
+    // Rating information
+    private Double averageRating;
+    private Integer reviewCount;
+    
     // Related data
     private StoreResponse store;
     private CategoryResponse category;

@@ -1,6 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 
-const FilterPrice = (props) => {
+const FilterPrice = ({ onFilterChange }) => {
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+
+  const handlePriceChange = (field, value) => {
+    const newRange = { ...priceRange, [field]: value };
+    setPriceRange(newRange);
+    
+    if (onFilterChange) {
+      onFilterChange({
+        minPrice: newRange.min ? parseFloat(newRange.min) : null,
+        maxPrice: newRange.max ? parseFloat(newRange.max) : null
+      });
+    }
+  };
+
+  const handleQuickSelect = (min, max) => {
+    setPriceRange({ min: min.toString(), max: max.toString() });
+    if (onFilterChange) {
+      onFilterChange({
+        minPrice: min,
+        maxPrice: max
+      });
+    }
+  };
+
+  const clearPriceFilter = () => {
+    setPriceRange({ min: '', max: '' });
+    if (onFilterChange) {
+      onFilterChange({
+        minPrice: null,
+        maxPrice: null
+      });
+    }
+  };
+
   return (
     <div className="card mb-3">
       <div
@@ -14,14 +48,44 @@ const FilterPrice = (props) => {
       </div>
       <ul className="list-group list-group-flush show" id="filterPrice">
         <li className="list-group-item">
+          <div className="mb-3">
+            <label className="form-label small">Min Price ($)</label>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              placeholder="0"
+              value={priceRange.min}
+              onChange={(e) => handlePriceChange('min', e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label small">Max Price ($)</label>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              placeholder="10000"
+              value={priceRange.max}
+              onChange={(e) => handlePriceChange('max', e.target.value)}
+            />
+          </div>
+          <button
+            className="btn btn-sm btn-outline-secondary w-100"
+            onClick={clearPriceFilter}
+          >
+            Clear
+          </button>
+        </li>
+        <li className="list-group-item">
           <div className="form-check">
             <input
               className="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault1"
+              type="radio"
+              name="priceRange"
+              id="price1"
+              onChange={() => handleQuickSelect(0, 500)}
             />
-            <label className="form-check-label" htmlFor="flexCheckDefault1">
-              $24.00 - $29.00 <span className="text-muted">(4)</span>
+            <label className="form-check-label" htmlFor="price1">
+              Under $500
             </label>
           </div>
         </li>
@@ -29,11 +93,13 @@ const FilterPrice = (props) => {
           <div className="form-check">
             <input
               className="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault2"
+              type="radio"
+              name="priceRange"
+              id="price2"
+              onChange={() => handleQuickSelect(500, 1000)}
             />
-            <label className="form-check-label" htmlFor="flexCheckDefault2">
-              $33.00 - $35.00 <span className="text-muted">(2)</span>
+            <label className="form-check-label" htmlFor="price2">
+              $500 - $1,000
             </label>
           </div>
         </li>
@@ -41,11 +107,41 @@ const FilterPrice = (props) => {
           <div className="form-check">
             <input
               className="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault3"
+              type="radio"
+              name="priceRange"
+              id="price3"
+              onChange={() => handleQuickSelect(1000, 2000)}
             />
-            <label className="form-check-label" htmlFor="flexCheckDefault3">
-              $70.00 - $99.00 <span className="text-muted">(5)</span>
+            <label className="form-check-label" htmlFor="price3">
+              $1,000 - $2,000
+            </label>
+          </div>
+        </li>
+        <li className="list-group-item">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceRange"
+              id="price4"
+              onChange={() => handleQuickSelect(2000, 5000)}
+            />
+            <label className="form-check-label" htmlFor="price4">
+              $2,000 - $5,000
+            </label>
+          </div>
+        </li>
+        <li className="list-group-item">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceRange"
+              id="price5"
+              onChange={() => handleQuickSelect(5000, 999999)}
+            />
+            <label className="form-check-label" htmlFor="price5">
+              Over $5,000
             </label>
           </div>
         </li>

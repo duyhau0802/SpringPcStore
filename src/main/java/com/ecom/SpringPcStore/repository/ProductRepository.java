@@ -34,18 +34,24 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStatus(String status);
     Page<Product> findByStatus(String status, Pageable pageable);
     
-    // Search functionality
-    @Query("SELECT p FROM Product p WHERE " +
+    // Search functionality with rating and price filters
+    @Query("SELECT p FROM Product p LEFT JOIN p.reviews r WHERE " +
            "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
            "(:categoryId IS NULL OR p.categoryId = :categoryId) AND " +
            "(:brandId IS NULL OR p.brandId = :brandId) AND " +
            "(:storeId IS NULL OR p.storeId = :storeId) AND " +
-           "(:status IS NULL OR p.status = :status)")
+           "(:status IS NULL OR p.status = :status) AND " +
+           "(:minRating IS NULL OR (SELECT AVG(rv.rating) FROM Review rv WHERE rv.product.id = p.id) >= :minRating) AND " +
+           "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
+           "(:maxPrice IS NULL OR p.price <= :maxPrice)")
     Page<Product> searchProducts(@Param("name") String name,
                                 @Param("categoryId") Long categoryId,
                                 @Param("brandId") Long brandId,
                                 @Param("storeId") Long storeId,
                                 @Param("status") String status,
+                                @Param("minRating") Double minRating,
+                                @Param("minPrice") Double minPrice,
+                                @Param("maxPrice") Double maxPrice,
                                 Pageable pageable);
     
     // Find products with images and specs
