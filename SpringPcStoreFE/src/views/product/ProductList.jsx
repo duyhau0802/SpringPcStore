@@ -15,29 +15,86 @@ import { formatPrice, calculateOriginalPrice, calculateDiscountPrice, qualifiesF
 
 class ProductList extends Component {
   state = {
-    view: "grid",
+    products: [],
+    loading: false,
+    error: null,
     currentPage: 1,
+    pagination: {},
+    view: "grid",
     filters: {
-      name: "",
+      name: null,
       categoryId: null,
       brandId: null,
       minPrice: null,
       maxPrice: null,
       minRating: null,
       sort: "id,desc"
-    }
+    },
+    lastUrl: window.location.search
   };
 
   componentDidMount() {
+    this.parseUrlParams();
     this.loadProducts();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentPage !== this.state.currentPage || 
-        prevState.filters !== this.state.filters) {
+    const currentUrl = window.location.search;
+    const prevUrl = prevState.lastUrl || '';
+    
+    // Check if page changed
+    const pageChanged = prevState.currentPage !== this.state.currentPage;
+    
+    // Check if URL changed (from navigation)
+    const urlChanged = currentUrl !== prevUrl;
+    
+    if (urlChanged) {
+      this.setState({ lastUrl: currentUrl }, () => {
+        this.parseUrlParams();
+        this.loadProducts();
+      });
+    } else if (pageChanged) {
+      // Load products for page change only
       this.loadProducts();
     }
+    // Note: filter changes are handled by onFilterChange which calls loadProducts directly
   }
+
+  parseUrlParams = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const search = urlParams.get('search');
+    const categoryId = urlParams.get('categoryId');
+    const minRating = urlParams.get('minRating');
+    const sort = urlParams.get('sort');
+    
+    // Only update state if parameters actually changed
+    const filtersToUpdate = {};
+    
+    if (search !== this.state.filters.name) {
+      filtersToUpdate.name = search;
+    }
+    
+    if (categoryId !== this.state.filters.categoryId) {
+      filtersToUpdate.categoryId = categoryId ? parseInt(categoryId) : null;
+    }
+    
+    if (minRating !== this.state.filters.minRating) {
+      filtersToUpdate.minRating = minRating ? parseFloat(minRating) : null;
+    }
+    
+    if (sort !== this.state.filters.sort) {
+      filtersToUpdate.sort = sort || 'id,desc';
+    }
+    
+    if (Object.keys(filtersToUpdate).length > 0) {
+      this.setState({
+        filters: {
+          ...this.state.filters,
+          ...filtersToUpdate
+        }
+      });
+    }
+  };
 
   loadProducts = () => {
     const { currentPage, filters } = this.state;
@@ -63,10 +120,13 @@ class ProductList extends Component {
     });
 
     console.log('API params:', JSON.stringify(params, null, 2));
+    console.log('Current filters:', JSON.stringify(this.state.filters, null, 2));
 
     if (filters.name || filters.categoryId || filters.brandId || filters.minRating || filters.minPrice || filters.maxPrice) {
+      console.log('Calling searchProducts with params');
       this.props.searchProducts(params);
     } else {
+      console.log('Calling fetchProducts with params');
       this.props.fetchProducts(params);
     }
   };
@@ -117,6 +177,9 @@ class ProductList extends Component {
         ...newFilters
       },
       currentPage: 1
+    }, () => {
+      // Load products after state update
+      this.loadProducts();
     });
   };
 
@@ -247,10 +310,34 @@ class ProductList extends Component {
               <CardServices />
             </div>
             <div className="col-md-9">
+              <div className="row mb-3">
+                <div className="col-12">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search products..."
+                      value={this.state.filters.name || ''}
+                      onChange={(e) => this.onFilterChange({ name: e.target.value })}
+                      aria-label="Search products"
+                    />
+                    <button 
+                      className="btn btn-outline-secondary" 
+                      type="button"
+                      onClick={() => this.onFilterChange({ name: '' })}
+                    >
+                      <i className="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div className="row">
                 <div className="col-7">
                   <span className="align-middle fw-bold">
                     {pagination.totalElements} results
+                    {this.state.filters.name && (
+                      <span className="text-warning"> for "{this.state.filters.name}"</span>
+                    )}
                   </span>
                 </div>
                 <div className="col-5 d-flex justify-content-end">

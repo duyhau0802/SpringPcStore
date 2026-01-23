@@ -1,22 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FilterPrice = ({ onFilterChange }) => {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Parse current URL to set price range
+    const urlParams = new URLSearchParams(location.search);
+    const minPrice = urlParams.get('minPrice');
+    const maxPrice = urlParams.get('maxPrice');
+    
+    if (minPrice || maxPrice) {
+      setPriceRange({
+        min: minPrice || '',
+        max: maxPrice || ''
+      });
+    }
+  }, [location.search]);
+
+  const updateURL = (minPrice, maxPrice) => {
+    const urlParams = new URLSearchParams(location.search);
+    
+    if (minPrice !== null) {
+      urlParams.set('minPrice', minPrice);
+    } else {
+      urlParams.delete('minPrice');
+    }
+    
+    if (maxPrice !== null) {
+      urlParams.set('maxPrice', maxPrice);
+    } else {
+      urlParams.delete('maxPrice');
+    }
+    
+    navigate(`${location.pathname}?${urlParams.toString()}`);
+  };
 
   const handlePriceChange = (field, value) => {
     const newRange = { ...priceRange, [field]: value };
     setPriceRange(newRange);
     
+    const minPrice = newRange.min ? parseFloat(newRange.min) : null;
+    const maxPrice = newRange.max ? parseFloat(newRange.max) : null;
+    
+    // Update URL
+    updateURL(minPrice, maxPrice);
+    
+    // Trigger filter change
     if (onFilterChange) {
       onFilterChange({
-        minPrice: newRange.min ? parseFloat(newRange.min) : null,
-        maxPrice: newRange.max ? parseFloat(newRange.max) : null
+        minPrice,
+        maxPrice
       });
     }
   };
 
   const handleQuickSelect = (min, max) => {
     setPriceRange({ min: min.toString(), max: max.toString() });
+    
+    // Update URL
+    updateURL(min, max);
+    
+    // Trigger filter change
     if (onFilterChange) {
       onFilterChange({
         minPrice: min,
@@ -27,6 +74,11 @@ const FilterPrice = ({ onFilterChange }) => {
 
   const clearPriceFilter = () => {
     setPriceRange({ min: '', max: '' });
+    
+    // Update URL
+    updateURL(null, null);
+    
+    // Trigger filter change
     if (onFilterChange) {
       onFilterChange({
         minPrice: null,

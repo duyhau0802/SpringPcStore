@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FilterStar = ({ onFilterChange }) => {
   const [selectedRating, setSelectedRating] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Parse current URL to set selected rating
+    const urlParams = new URLSearchParams(location.search);
+    const minRating = urlParams.get('minRating');
+    if (minRating) {
+      setSelectedRating(parseInt(minRating));
+    }
+  }, [location.search]);
 
   const handleRatingChange = (rating) => {
-    setSelectedRating(rating === selectedRating ? null : rating);
+    const newRating = rating === selectedRating ? null : rating;
+    setSelectedRating(newRating);
+    
+    // Update URL
+    const urlParams = new URLSearchParams(location.search);
+    if (newRating) {
+      urlParams.set('minRating', newRating);
+    } else {
+      urlParams.delete('minRating');
+    }
+    
+    navigate(`${location.pathname}?${urlParams.toString()}`);
+    
+    // Trigger filter change
     if (onFilterChange) {
       onFilterChange({ 
-        minRating: rating === selectedRating ? null : rating 
+        minRating: newRating
       });
     }
   };

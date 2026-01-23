@@ -1,7 +1,15 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FilterClear = ({ onClear }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleClearAll = () => {
+    // Navigate to clean URL (no parameters)
+    navigate(location.pathname);
+    
+    // Trigger clear callback
     if (onClear) {
       onClear();
     }

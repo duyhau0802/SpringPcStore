@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { categoryAPI } from "../../services/categoryAPI";
 
 const FilterCategory = ({ onFilterChange }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     loadCategories();
-  }, []);
+    // Parse current URL to set selected category
+    const urlParams = new URLSearchParams(location.search);
+    const categoryId = urlParams.get('categoryId');
+    if (categoryId) {
+      setSelectedCategory(parseInt(categoryId));
+    }
+  }, [location.search]);
 
   const loadCategories = async () => {
     try {
@@ -38,10 +47,24 @@ const FilterCategory = ({ onFilterChange }) => {
   };
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
+    const newSelectedCategory = categoryId === selectedCategory ? null : categoryId;
+    setSelectedCategory(newSelectedCategory);
+    
+    // Update URL
+    const urlParams = new URLSearchParams(location.search);
+    if (newSelectedCategory) {
+      urlParams.set('categoryId', newSelectedCategory);
+    } else {
+      urlParams.delete('categoryId');
+    }
+    
+    // Navigate to new URL
+    navigate(`${location.pathname}?${urlParams.toString()}`);
+    
+    // Also trigger filter change
     if (onFilterChange) {
       onFilterChange({ 
-        categoryId: categoryId === selectedCategory ? null : categoryId 
+        categoryId: newSelectedCategory
       });
     }
   };

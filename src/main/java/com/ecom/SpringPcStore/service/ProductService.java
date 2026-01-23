@@ -64,8 +64,21 @@ public class ProductService {
     public Page<ProductResponse> searchProducts(String name, Long categoryId, Long brandId, 
                                               Long storeId, String status, Double minRating, 
                                               Double minPrice, Double maxPrice, Pageable pageable) {
-        return productRepository.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable)
+        System.out.println("Searching products with params:");
+        System.out.println("  name: " + name);
+        System.out.println("  categoryId: " + categoryId);
+        System.out.println("  brandId: " + brandId);
+        System.out.println("  storeId: " + storeId);
+        System.out.println("  status: " + status);
+        System.out.println("  minRating: " + minRating);
+        System.out.println("  minPrice: " + minPrice);
+        System.out.println("  maxPrice: " + maxPrice);
+        
+        Page<ProductResponse> results = productRepository.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable)
                 .map(this::convertToResponse);
+        
+        System.out.println("Found " + results.getTotalElements() + " products matching search criteria");
+        return results;
     }
 
     public List<ProductResponse> getProductsByStore(Long storeId) {

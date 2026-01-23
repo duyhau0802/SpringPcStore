@@ -32,32 +32,32 @@ const TopMenu = () => {
               </button>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <Link className="dropdown-item" to="/category">
+                  <Link className="dropdown-item" to="/category?categoryId=1">
                     <i className="bi bi-laptop me-2"></i>Laptops & Computers
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category">
-                    <i className="bi bi-phone me-2"></i>Smartphones & Tablets
+                  <Link className="dropdown-item" to="/category?categoryId=3">
+                    <i className="bi bi-phone me-2"></i>Monitors
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category">
+                  <Link className="dropdown-item" to="/category?categoryId=4">
                     <i className="bi bi-gpu-card me-2"></i>Graphics Cards
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category">
+                  <Link className="dropdown-item" to="/category?categoryId=7">
                     <i className="bi bi-memory me-2"></i>Memory & Storage
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category">
+                  <Link className="dropdown-item" to="/category?categoryId=8">
                     <i className="bi bi-motherboard me-2"></i>Motherboards
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category">
+                  <Link className="dropdown-item" to="/category?categoryId=5">
                     <i className="bi bi-cpu me-2"></i>Processors
                   </Link>
                 </li>
@@ -72,25 +72,19 @@ const TopMenu = () => {
               </ul>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/category">
-                <i className="bi bi-lightning-charge-fill text-warning me-1"></i>
-                Deals
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/category">
+              <Link className="nav-link" to="/category?minRating=4">
                 <i className="bi bi-star-fill text-warning me-1"></i>
                 Featured
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/category">
+              <Link className="nav-link" to="/category?sort=createdAt,desc">
                 <i className="bi bi-fire text-danger me-1"></i>
                 New Arrivals
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/category">
+              <Link className="nav-link" to="/category?categoryId=4">
                 <i className="bi bi-shield-check text-success me-1"></i>
                 Gaming
               </Link>
