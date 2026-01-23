@@ -45,8 +45,19 @@ public class ProductService {
     }
 
     public ProductResponse getProductByIdWithDetails(Long id) {
-        Product product = productRepository.findByIdWithImagesAndSpecs(id)
+        System.out.println("Fetching product details for ID: " + id);
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        
+        // Manually fetch relationships to avoid lazy loading issues
+        List<ProductImage> images = productImageRepository.findByProductId(id);
+        List<ProductSpec> specs = productSpecRepository.findByProductId(id);
+        
+        product.setProductImages(images);
+        product.setProductSpecs(specs);
+        
+        System.out.println("Found product: " + product.getName() + ", Images: " + images.size() + ", Specs: " + specs.size());
+        
         return convertToResponse(product);
     }
 
@@ -252,9 +263,11 @@ public class ProductService {
                     .orElse(0.0);
             response.setAverageRating(averageRating);
             response.setReviewCount(reviews.size());
+            System.out.println("Product " + product.getId() + " - Rating: " + averageRating + ", Reviews: " + reviews.size());
         } else {
             response.setAverageRating(0.0);
             response.setReviewCount(0);
+            System.out.println("Product " + product.getId() + " - No reviews");
         }
 
         return response;

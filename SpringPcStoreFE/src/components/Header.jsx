@@ -15,87 +15,112 @@ const Header = ({ auth, logout }) => {
       <div className="container-fluid">
         <div className="row g-3">
           <div className="col-md-3 text-center">
-            <Link to="/">
-              <img alt="logo" src="../../images/logo.webp" />
+            <Link to="/" className="text-decoration-none">
+              <div className="d-flex align-items-center justify-content-center">
+                <i className="bi bi-cpu-fill text-primary me-2" style={{fontSize: '1.5rem'}}></i>
+                <div>
+                  <div className="fw-bold text-dark">Tech Store</div>
+                  <small className="text-muted">Computer Components</small>
+                </div>
+              </div>
             </Link>
           </div>
           <div className="col-md-5">
             <Search />
           </div>
           <div className="col-md-4">
-            <div className="position-relative d-inline me-3">
-              <Link to="/cart" className="btn btn-primary">
-                <i className="bi bi-cart3"></i>
-                <div className="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
-                  2
-                </div>
-              </Link>
-            </div>
-            {auth.isAuthenticated ? (
-              <div className="btn-group">
-                <button
-                  type="button"
-                  className="btn btn-secondary rounded-circle border me-3"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                  aria-label="Profile"
-                  data-bs-toggle="dropdown"
-                >
-                  <i className="bi bi-person-fill text-light"></i>
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="/account/profile">
-                      <i className="bi bi-person-square"></i> {auth.user?.fullName || 'My Profile'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/star/zone">
-                      <i className="bi bi-star-fill text-warning"></i> Star Zone
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/account/orders">
-                      <i className="bi bi-list-check text-primary"></i> Orders
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/account/wishlist">
-                      <i className="bi bi-heart-fill text-danger"></i> Wishlist
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/account/notification">
-                      <i className="bi bi-bell-fill text-primary"></i>
-                      Notification
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/support">
-                      <i className="bi bi-info-circle-fill text-success"></i>
-                      Support
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      <i className="bi bi-door-closed-fill text-danger"></i>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
+            <div className="d-flex align-items-center justify-content-end">
+              <div className="position-relative me-3">
+                <Link to="/cart" className="btn btn-outline-primary position-relative">
+                  <i className="bi bi-cart3"></i>
+                  <span className="ms-1 d-none d-md-inline">Cart</span>
+                  <div className="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
+                    2
+                  </div>
+                </Link>
               </div>
-            ) : (
-              <>
-                <Link to="/account/signin">Sign In</Link> |{" "}
-                <Link to="/account/signup"> Sign Up</Link>
-              </>
-            )}
+              
+              <div className="position-relative me-3">
+                <Link to="/account/wishlist" className="btn btn-outline-danger">
+                  <i className="bi bi-heart"></i>
+                  <span className="ms-1 d-none d-md-inline">Wishlist</span>
+                </Link>
+              </div>
+              
+              {auth.isAuthenticated ? (
+                <div className="btn-group">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary rounded-circle border me-2"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-label="Profile"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i className="bi bi-person-fill"></i>
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <Link className="dropdown-item" to="/account/profile">
+                        <i className="bi bi-person-square me-2"></i> 
+                        {auth.user?.fullName || 'My Profile'}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/account/orders">
+                        <i className="bi bi-box-seam me-2 text-primary"></i> 
+                        My Orders
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/account/wishlist">
+                        <i className="bi bi-heart-fill me-2 text-danger"></i> 
+                        Wishlist
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/star/zone">
+                        <i className="bi bi-star-fill me-2 text-warning"></i> 
+                        Rewards
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/account/notification">
+                        <i className="bi bi-bell-fill me-2 text-primary"></i> 
+                        Notifications
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/support">
+                        <i className="bi bi-headset me-2 text-success"></i> 
+                        Support
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <button className="dropdown-item text-danger" onClick={handleLogout}>
+                        <i className="bi bi-door-closed-fill me-2"></i> 
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              ) : (
+                <div className="d-flex align-items-center">
+                  <Link to="/account/signin" className="btn btn-outline-primary btn-sm me-2">
+                    <i className="bi bi-box-arrow-in-right me-1"></i>Sign In
+                  </Link>
+                  <Link to="/account/signup" className="btn btn-primary btn-sm">
+                    <i className="bi bi-person-plus me-1"></i>Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

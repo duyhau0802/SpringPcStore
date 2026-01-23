@@ -55,7 +55,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                 Pageable pageable);
     
     // Find products with images and specs
-    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImages LEFT JOIN FETCH p.productSpecs WHERE p.id = :id")
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImages LEFT JOIN FETCH p.productSpecs LEFT JOIN FETCH p.store LEFT JOIN FETCH p.category LEFT JOIN FETCH p.brand WHERE p.id = :id")
     Optional<Product> findByIdWithImagesAndSpecs(@Param("id") Long id);
     
     // Find products by store with inventory

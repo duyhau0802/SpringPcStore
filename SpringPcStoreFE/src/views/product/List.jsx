@@ -85,8 +85,7 @@ class ProductListView extends Component {
               <div className="row">
                 <div className="col-7">
                   <span className="align-middle fw-bold">
-                    {this.state.totalItems} results for{" "}
-                    <span className="text-warning">"t-shirts"</span>
+                    {this.state.totalItems} results
                   </span>
                 </div>
                 <div className="col-5 d-flex justify-content-end">

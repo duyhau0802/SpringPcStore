@@ -5,7 +5,7 @@ const TopMenu = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark p-0">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          E-Commerce
+          <i className="bi bi-cpu-fill me-2"></i>Tech Store
         </Link>
         <button
           className="navbar-toggler"
@@ -28,91 +28,100 @@ const TopMenu = () => {
                 aria-expanded="false"
                 data-bs-toggle="dropdown"
               >
-                All Pages
+                Categories
               </button>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <Link className="dropdown-item" to="/account/signin">
-                    Sign In
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-laptop me-2"></i>Laptops & Computers
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/account/signup">
-                    Sign Up
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-phone me-2"></i>Smartphones & Tablets
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-gpu-card me-2"></i>Graphics Cards
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-memory me-2"></i>Memory & Storage
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-motherboard me-2"></i>Motherboards
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-cpu me-2"></i>Processors
                   </Link>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/checkout">
-                    Checkout Page
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/contact-us">
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/blog">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/blog/detail">
-                    Blog Detail
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/fsafasf">
-                    404 Page Not Found
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/500">
-                    500 Internal Server Error
+                  <Link className="dropdown-item" to="/category">
+                    <i className="bi bi-box me-2"></i>All Components
                   </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/category">
-                Fashion
+                <i className="bi bi-lightning-charge-fill text-warning me-1"></i>
+                Deals
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/category">
-                Supermarket
+                <i className="bi bi-star-fill text-warning me-1"></i>
+                Featured
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/category">
-                Electronics
+                <i className="bi bi-fire text-danger me-1"></i>
+                New Arrivals
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/category">
-                Furniture
+                <i className="bi bi-shield-check text-success me-1"></i>
+                Gaming
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/category">
-                Garden & Outdoors
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/category">
-                Jewellery
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/documentation">
-                Documentation
-              </Link>
+            <li className="nav-item dropdown">
+              <button
+                className="btn nav-link dropdown-toggle"
+                id="supportDropdown"
+                data-toggle="dropdown"
+                aria-expanded="false"
+                data-bs-toggle="dropdown"
+              >
+                Support
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="supportDropdown">
+                <li>
+                  <Link className="dropdown-item" to="/documentation">
+                    <i className="bi bi-book me-2"></i>Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/support">
+                    <i className="bi bi-headset me-2"></i>Customer Support
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/contact-us">
+                    <i className="bi bi-envelope me-2"></i>Contact Us
+                  </Link>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>

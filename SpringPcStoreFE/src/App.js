@@ -20,7 +20,7 @@ const WishlistView = lazy(() => import("./views/account/Wishlist"));
 const NotificationView = lazy(() => import("./views/account/Notification"));
 const MyProfileView = lazy(() => import("./views/account/MyProfile"));
 const ProductListView = lazy(() => import("./views/product/ProductList"));
-const ProductDetailView = lazy(() => import("./views/product/Detail"));
+const ProductDetailView = lazy(() => import("./views/product/ProductDetail"));
 const StarZoneView = lazy(() => import("./views/product/StarZone"));
 const CartView = lazy(() => import("./views/cart/Cart"));
 const CheckoutView = lazy(() => import("./views/cart/Checkout"));

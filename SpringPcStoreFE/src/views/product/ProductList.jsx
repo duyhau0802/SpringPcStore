@@ -110,10 +110,13 @@ class ProductList extends Component {
   };
 
   onFilterChange = (newFilters) => {
-    console.log('Filter change:', newFilters);
+    console.log('ProductList: onFilterChange called with:', newFilters);
     this.setState({
-      currentPage: 1,
-      filters: { ...this.state.filters, ...newFilters }
+      filters: {
+        ...this.state.filters,
+        ...newFilters
+      },
+      currentPage: 1
     });
   };
 
@@ -229,7 +232,7 @@ class ProductList extends Component {
         >
           <div className="container text-center">
             <span className="display-5 px-3 bg-white rounded shadow">
-              PC Components & Tech Store
+              Tech Store
             </span>
           </div>
         </div>
@@ -247,8 +250,7 @@ class ProductList extends Component {
               <div className="row">
                 <div className="col-7">
                   <span className="align-middle fw-bold">
-                    {pagination.totalElements} results for{" "}
-                    <span className="text-warning">"PC Components"</span>
+                    {pagination.totalElements} results
                   </span>
                 </div>
                 <div className="col-5 d-flex justify-content-end">
