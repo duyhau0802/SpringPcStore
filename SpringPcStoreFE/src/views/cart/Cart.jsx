@@ -98,7 +98,7 @@ const CartView = () => {
                               </div>
                               <div className="col">
                                 <Link
-                                  to={`/product/detail/${item.productId}`}
+                                  to={`/product/detail?id=${item.productId}`}
                                   className="text-decoration-none"
                                 >
                                   {item.product?.name || 'Product Name'}
@@ -142,7 +142,9 @@ const CartView = () => {
                             </div>
                           </td>
                           <td>
-                            <var className="price">${item.subtotal?.toFixed(2) || '0.00'}</var>
+                            <var className="price">
+                              ${(item.subtotal || (item.price * item.quantity))?.toFixed(2) || '0.00'}
+                            </var>
                             <small className="d-block text-muted">
                               ${item.price?.toFixed(2) || '0.00'} each
                             </small>
@@ -175,7 +177,12 @@ const CartView = () => {
                 </table>
               </div>
               <div className="card-footer">
-                <Link to="/checkout" className="btn btn-primary float-end" disabled={!cartItems || cartItems.length === 0}>
+                <Link 
+                  to="/checkout" 
+                  state={{ cartData: { cartItems, totalPrice, totalItems } }} 
+                  className="btn btn-primary float-end" 
+                  disabled={!cartItems || cartItems.length === 0}
+                >
                   Make Purchase <i className="bi bi-chevron-right"></i>
                 </Link>
                 <Link to="/" className="btn btn-secondary">

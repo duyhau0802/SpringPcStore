@@ -2,6 +2,7 @@ package com.ecom.SpringPcStore.controller;
 
 import com.ecom.SpringPcStore.dto.request.PaymentRequest;
 import com.ecom.SpringPcStore.dto.response.PaymentResponse;
+import com.ecom.SpringPcStore.security.PaymentSecurity;
 import com.ecom.SpringPcStore.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final PaymentSecurity paymentSecurity;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -60,7 +62,9 @@ public class PaymentController {
             @Valid @RequestBody PaymentRequest request, 
             Authentication authentication) {
         // Validate that user owns the order
-        // Additional validation can be added here to check order ownership
+        if (!paymentSecurity.isOrderOwner(request.getOrderId(), authentication)) {
+            throw new RuntimeException("You can only create payments for your own orders");
+        }
         
         PaymentResponse payment = paymentService.createPayment(request);
         return ResponseEntity.ok(payment);

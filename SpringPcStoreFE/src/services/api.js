@@ -14,6 +14,19 @@ api.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('API Request:', {
+        url: config.url,
+        method: config.method,
+        hasToken: true,
+        tokenLength: token.length,
+        headers: config.headers
+      });
+    } else {
+      console.log('API Request - No token found:', {
+        url: config.url,
+        method: config.method,
+        hasToken: false
+      });
     }
     return config;
   },
@@ -23,8 +36,23 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API Response Success:', {
+      url: response.config.url,
+      status: response.status,
+      statusText: response.statusText
+    });
+    return response;
+  },
   (error) => {
+    console.log('API Response Error:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      headers: error.response?.headers
+    });
+    
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');

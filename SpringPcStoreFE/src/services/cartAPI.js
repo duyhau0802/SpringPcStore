@@ -30,7 +30,10 @@ export const cartAPI = {
 
   // Helper function to calculate cart totals
   calculateCartTotals: (cartItems) => {
-    const totalPrice = cartItems.reduce((sum, item) => sum + (item.subtotal || 0), 0);
+    const totalPrice = cartItems.reduce((sum, item) => {
+      const itemSubtotal = item.subtotal || (item.price * item.quantity);
+      return sum + (itemSubtotal || 0);
+    }, 0);
     const totalItems = cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
     
     return {

@@ -32,6 +32,9 @@ public class StoreCommission {
     @Column(name = "commission_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal commissionAmount;
 
+    @Column(name = "commission_rate", nullable = false, precision = 5, scale = 4)
+    private BigDecimal commissionRate;
+
     @Column(name = "order_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal orderAmount;
 
@@ -40,6 +43,9 @@ public class StoreCommission {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "effective_from")
+    private LocalDateTime effectiveFrom = LocalDateTime.now();
 
     // Relationships
     @ManyToOne(fetch = FetchType.LAZY)
