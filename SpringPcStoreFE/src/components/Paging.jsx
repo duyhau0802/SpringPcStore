@@ -25,6 +25,7 @@ class Paging extends Component {
       pageNeighbours = 0,
       sizing = "",
       alignment = "",
+      currentPage = 1, // Add currentPage prop
     } = props;
     this.sizing = typeof sizing === "string" ? sizing : "";
     this.alignment = typeof alignment === "string" ? alignment : "";
@@ -38,11 +39,22 @@ class Paging extends Component {
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
 
-    this.state = { currentPage: 1 };
+    // Use external currentPage or default to 1
+    this.state = { 
+      currentPage: typeof currentPage === "number" ? currentPage : 1 
+    };
   }
 
   componentDidMount() {
-    this.gotoPage(1);
+    this.gotoPage(this.state.currentPage);
+  }
+
+  componentDidUpdate(prevProps) {
+    // Update currentPage when prop changes
+    if (prevProps.currentPage !== this.props.currentPage && 
+        this.props.currentPage !== this.state.currentPage) {
+      this.setState({ currentPage: this.props.currentPage });
+    }
   }
 
   gotoPage = (page) => {
@@ -186,8 +198,10 @@ Paging.propTypes = {
   totalRecords: PropTypes.number.isRequired,
   pageLimit: PropTypes.number,
   pageNeighbours: PropTypes.number,
+  currentPage: PropTypes.number,
   onPageChanged: PropTypes.func,
   sizing: PropTypes.string,
+  alignment: PropTypes.string,
 };
 
 export default Paging;

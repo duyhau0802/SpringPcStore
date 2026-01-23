@@ -261,6 +261,7 @@ const ProductList = () => {
           totalRecords={pagination.totalElements}
           pageLimit={12}
           pageNeighbours={3}
+          currentPage={currentPage} // Add currentPage prop
           onPageChanged={onPageChanged}
           sizing=""
           alignment="justify-content-center"
