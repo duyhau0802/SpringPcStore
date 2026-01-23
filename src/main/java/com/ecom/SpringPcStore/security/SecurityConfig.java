@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/**").hasRole("ADMIN")
                 .requestMatchers("/api/stores/**").hasRole("ADMIN")
                 .requestMatchers("/api/payments").authenticated() // Allow authenticated users to create payments
+                .requestMatchers("/api/payments/order/*").authenticated() // Allow users to view their order payments
                 .requestMatchers("/api/payments/**").hasRole("ADMIN") // Admin only for other payment operations
                 // Store Owner endpoints
                 .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN", "STORE_OWNER")

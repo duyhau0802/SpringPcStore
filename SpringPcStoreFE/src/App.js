@@ -17,6 +17,7 @@ const SignUpView = lazy(() => import("./views/account/SignUp"));
 const ForgotPasswordView = lazy(() => import("./views/account/ForgotPassword"));
 const AccountOrdersView = lazy(() => import("./views/account/Orders"));
 const OrdersView = lazy(() => import("./views/orders/Orders"));
+const OrderDetailView = lazy(() => import("./views/orders/OrderDetail"));
 const OrderPaymentView = lazy(() => import("./views/orders/OrderPayment"));
 const WishlistView = lazy(() => import("./views/account/Wishlist"));
 const NotificationView = lazy(() => import("./views/account/Notification"));
@@ -71,6 +72,7 @@ function App() {
             <Route exact path="/cart" element={<CartView/>} />
             <Route exact path="/checkout" element={<CheckoutView />} />
             <Route exact path="/orders" element={<OrdersView />} />
+            <Route exact path="/orders/:id" element={<OrderDetailView />} />
             <Route exact path="/orders/:id/payment" element={<OrderPaymentView />} />
             <Route exact path="/invoice" element={<InvoiceView />} />
             <Route exact path="/documentation" element={<DocumentationView/>} />
