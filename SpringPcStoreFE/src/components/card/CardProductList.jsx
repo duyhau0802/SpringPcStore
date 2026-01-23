@@ -1,8 +1,51 @@
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { addToCart } from "../../redux/actions/cartActions";
 import RatingStars from "../RatingStars";
 
 const CardProductList = (props) => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(state => state.auth);
   const product = props.data;
+  const [addingToCart, setAddingToCart] = useState(false);
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!isAuthenticated) {
+      alert('Please login to add items to cart');
+      return;
+    }
+
+    if (product.stock <= 0) {
+      alert('This product is out of stock');
+      return;
+    }
+
+    setAddingToCart(true);
+    try {
+      const result = await dispatch(addToCart(
+        product.id,
+        1, // Default store ID
+        1, // Default quantity
+        product.price
+      ));
+      
+      if (result.success) {
+        alert('Product added to cart successfully!');
+      } else {
+        alert(`Failed to add to cart: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('An error occurred while adding to cart');
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
   return (
     <div className="card">
       <div className="row g-0">
@@ -69,10 +112,19 @@ const CardProductList = (props) => {
             <div className="btn-group d-flex" role="group">
               <button
                 type="button"
-                className="btn btn-sm btn-primary"
+                className={`btn btn-sm ${addingToCart ? 'btn-secondary' : 'btn-primary'}`}
                 title="Add to cart"
+                onClick={handleAddToCart}
+                disabled={addingToCart || product.stock <= 0}
               >
-                <i className="bi bi-cart-plus" />
+                {addingToCart ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    Adding...
+                  </>
+                ) : (
+                  <i className="bi bi-cart-plus" />
+                )}
               </button>
               <button
                 type="button"

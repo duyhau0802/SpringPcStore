@@ -1,14 +1,31 @@
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../redux/actions/authActions";
+import { fetchCart } from "../redux/actions/cartActions";
 const Search = lazy(() => import("./Search"));
 
-const Header = ({ auth, logout }) => {
+const Header = ({ auth, logout, cart, fetchCart }) => {
   const handleLogout = () => {
     logout();
     window.location.href = '/';
   };
+
+  useEffect(() => {
+    console.log('Header - useEffect called');
+    console.log('Auth state:', auth);
+    
+    // Fetch cart data when user is authenticated
+    if (auth.isAuthenticated && auth.user) {
+      console.log('User is authenticated, fetching cart...');
+      fetchCart().catch(error => {
+        console.error('Failed to fetch cart:', error);
+        // Don't show error to user, just log it
+      });
+    } else {
+      console.log('User not authenticated, not fetching cart');
+    }
+  }, [auth.isAuthenticated, auth.user, fetchCart]);
 
   return (
     <header className="p-3 border-bottom bg-light">
@@ -34,9 +51,11 @@ const Header = ({ auth, logout }) => {
                 <Link to="/cart" className="btn btn-outline-primary position-relative">
                   <i className="bi bi-cart3"></i>
                   <span className="ms-1 d-none d-md-inline">Cart</span>
-                  <div className="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
-                    2
-                  </div>
+                  {cart && cart.totalItems > 0 && (
+                    <div className="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
+                      {cart.totalItems > 99 ? '99+' : cart.totalItems}
+                    </div>
+                  )}
                 </Link>
               </div>
               
@@ -129,6 +148,7 @@ const Header = ({ auth, logout }) => {
 };
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  cart: state.cart,
 });
 
-export default connect(mapStateToProps, { logout })(Header);
+export default connect(mapStateToProps, { logout, fetchCart })(Header);

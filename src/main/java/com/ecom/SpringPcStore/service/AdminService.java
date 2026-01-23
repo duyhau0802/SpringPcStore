@@ -6,7 +6,6 @@ import com.ecom.SpringPcStore.entity.UserRole;
 import com.ecom.SpringPcStore.repository.RoleRepository;
 import com.ecom.SpringPcStore.repository.UserRepository;
 import com.ecom.SpringPcStore.repository.UserRoleRepository;
-import com.ecom.SpringPcStore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
