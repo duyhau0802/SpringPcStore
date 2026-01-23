@@ -6,6 +6,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import TopMenu from "./components/TopMenu";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import AuthInitializer from "./components/AuthInitializer";
+import "./utils/resetAuth"; // Import reset utility
 import "./App.min.css";
 //const Header = lazy(() => import("./components/Header"));
 //const TopMenu = lazy(() => import("./components/TopMenu"));
@@ -33,15 +35,16 @@ const BlogDetailView = lazy(() => import("./views/blog/Detail"));
 
 function App() {
   return (
-    <BrowserRouter>
-      <React.Fragment>
-        <Header />
-        <TopMenu />
-        <Suspense
-          fallback={
-            <div className="text-white text-center mt-3">Loading...</div>
-          }
-        >
+    <AuthInitializer>
+      <BrowserRouter>
+        <React.Fragment>
+          <Header />
+          <TopMenu />
+          <Suspense
+            fallback={
+              <div className="text-white text-center mt-3">Loading...</div>
+            }
+          >
           <Routes>
             <Route exact path="/" element={<HomeView/>} />
             <Route exact path="/account/signin" element={<SignInView/>} />
@@ -77,6 +80,7 @@ function App() {
         <Footer />
       </React.Fragment>
     </BrowserRouter>
+    </AuthInitializer>
   );
 }
 

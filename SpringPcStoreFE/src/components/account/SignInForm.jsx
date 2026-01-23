@@ -2,37 +2,55 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { compose } from "redux";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { login } from "../../redux/actions/authActions";
 import renderFormGroupField from "../../helpers/renderFormGroupField";
 import {
   required,
   maxLength20,
   minLength8,
-  maxLengthMobileNo,
-  minLengthMobileNo,
-  digit,
 } from "../../helpers/validation";
-import { ReactComponent as IconPhone } from "bootstrap-icons/icons/phone.svg";
+import { ReactComponent as IconEnvelope } from "bootstrap-icons/icons/envelope.svg";
 import { ReactComponent as IconShieldLock } from "bootstrap-icons/icons/shield-lock.svg";
 
-const SignInForm = (props) => {
-  const { handleSubmit, submitting, onSubmit, submitFailed } = props;
+const SignInForm = ({ handleSubmit, submitting, onSubmit, submitFailed, login, auth }) => {
+  const handleFormSubmit = async (values) => {
+    console.log('Submitting login with values:', values);
+    
+    const loginData = {
+      usernameOrEmail: values.email, // Send email as usernameOrEmail
+      password: values.password,
+    };
+    
+    console.log('Login data being sent:', loginData);
+    
+    const result = await login(loginData);
+    console.log('Login result:', result);
+    
+    if (result.success) {
+      console.log('Login successful, redirecting...');
+      window.location.href = '/';
+    } else {
+      console.error('Login failed:', result.error);
+      alert(result.error);
+    }
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className={`needs-validation ${submitFailed ? "was-validated" : ""}`}
       noValidate
     >
       <Field
-        name="mobileNo"
-        type="number"
-        label="Mobile no"
+        name="email"
+        type="text"
+        label="Email or Username"
         component={renderFormGroupField}
-        placeholder="Mobile no without country code"
-        icon={IconPhone}
-        validate={[required, maxLengthMobileNo, minLengthMobileNo, digit]}
+        placeholder="Enter your email or username"
+        icon={IconEnvelope}
+        validate={[required]}
         required={true}
-        max="999999999999999"
-        min="9999"
         className="mb-3"
       />
       <Field
@@ -52,9 +70,9 @@ const SignInForm = (props) => {
         <button
           type="submit"
           className="btn btn-primary mb-3"
-          disabled={submitting}
+          disabled={submitting || auth.loading}
         >
-          Log In
+          {auth.loading ? 'Signing In...' : 'Log In'}
         </button>
       </div>
       <Link className="float-start" to="/account/signup" title="Sign Up">
@@ -89,7 +107,12 @@ const SignInForm = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
 export default compose(
+  connect(mapStateToProps, { login }),
   reduxForm({
     form: "signin",
   })

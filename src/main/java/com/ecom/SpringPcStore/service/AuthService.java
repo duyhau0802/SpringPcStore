@@ -56,8 +56,19 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        User user;
+        String loginIdentifier = request.getUsernameOrEmail();
+        
+        // Try to find user by username first, then by email
+        if (loginIdentifier.contains("@")) {
+            // Login with email
+            user = userRepository.findByEmail(loginIdentifier)
+                    .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        } else {
+            // Login with username
+            user = userRepository.findByUsername(loginIdentifier)
+                    .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");

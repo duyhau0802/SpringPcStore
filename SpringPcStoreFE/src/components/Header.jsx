@@ -1,8 +1,15 @@
 import { lazy } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from "../redux/actions/authActions";
 const Search = lazy(() => import("./Search"));
 
-const Header = () => {
+const Header = ({ auth, logout }) => {
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/';
+  };
+
   return (
     <header className="p-3 border-bottom bg-light">
       <div className="container-fluid">
@@ -24,70 +31,79 @@ const Header = () => {
                 </div>
               </Link>
             </div>
-            <div className="btn-group">
-              <button
-                type="button"
-                className="btn btn-secondary rounded-circle border me-3"
-                data-toggle="dropdown"
-                aria-expanded="false"
-                aria-label="Profile"
-                data-bs-toggle="dropdown"
-              >
-                <i className="bi bi-person-fill text-light"></i>
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/account/profile">
-                    <i className="bi bi-person-square"></i> My Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/star/zone">
-                    <i className="bi bi-star-fill text-warning"></i> Star Zone
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/account/orders">
-                    <i className="bi bi-list-check text-primary"></i> Orders
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/account/wishlist">
-                    <i className="bi bi-heart-fill text-danger"></i> Wishlist
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/account/notification">
-                    <i className="bi bi-bell-fill text-primary"></i>
-                    Notification
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/support">
-                    <i className="bi bi-info-circle-fill text-success"></i>
-                    Support
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/">
-                    <i className="bi bi-door-closed-fill text-danger"></i>
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <Link to="/account/signin">Sign In</Link> |{" "}
-              <Link to="/account/signup"> Sign Up</Link>
+            {auth.isAuthenticated ? (
+              <div className="btn-group">
+                <button
+                  type="button"
+                  className="btn btn-secondary rounded-circle border me-3"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                  aria-label="Profile"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="bi bi-person-fill text-light"></i>
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="dropdown-item" to="/account/profile">
+                      <i className="bi bi-person-square"></i> {auth.user?.fullName || 'My Profile'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/star/zone">
+                      <i className="bi bi-star-fill text-warning"></i> Star Zone
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/account/orders">
+                      <i className="bi bi-list-check text-primary"></i> Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/account/wishlist">
+                      <i className="bi bi-heart-fill text-danger"></i> Wishlist
+                    </Link>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/account/notification">
+                      <i className="bi bi-bell-fill text-primary"></i>
+                      Notification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/support">
+                      <i className="bi bi-info-circle-fill text-success"></i>
+                      Support
+                    </Link>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      <i className="bi bi-door-closed-fill text-danger"></i>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <>
+                <Link to="/account/signin">Sign In</Link> |{" "}
+                <Link to="/account/signup"> Sign Up</Link>
+              </>
+            )}
           </div>
         </div>
       </div>
     </header>
   );
 };
-export default Header;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { logout })(Header);

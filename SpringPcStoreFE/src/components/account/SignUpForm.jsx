@@ -1,28 +1,71 @@
 import { Field, reduxForm } from "redux-form";
 import { compose } from "redux";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { register } from "../../redux/actions/authActions";
 import renderFormGroupField from "../../helpers/renderFormGroupField";
 import renderFormField from "../../helpers/renderFormField";
 import {
   required,
   maxLength20,
   minLength8,
-  maxLengthMobileNo,
-  minLengthMobileNo,
-  digit,
+  maxLength50,
+  minLength3,
+  email,
   name,
 } from "../../helpers/validation";
-import { ReactComponent as IconPhone } from "bootstrap-icons/icons/phone.svg";
+import { ReactComponent as IconEnvelope } from "bootstrap-icons/icons/envelope.svg";
 import { ReactComponent as IconShieldLock } from "bootstrap-icons/icons/shield-lock.svg";
 
-const SignUpForm = (props) => {
-  const { handleSubmit, submitting, onSubmit, submitFailed } = props;
+const SignUpForm = ({ handleSubmit, submitting, onSubmit, submitFailed, register, auth }) => {
+  const handleFormSubmit = async (values) => {
+    const userData = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      fullName: `${values.firstName} ${values.lastName}`,
+      phoneNumber: values.phoneNumber || '',
+    };
+    
+    const result = await register(userData);
+    if (result.success) {
+      alert('Registration successful! Please sign in.');
+      window.location.href = '/account/signin';
+    } else {
+      alert(result.error);
+    }
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className={`needs-validation ${submitFailed ? "was-validated" : ""}`}
       noValidate
     >
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <Field
+            name="username"
+            type="text"
+            label="Username"
+            component={renderFormField}
+            placeholder="Username"
+            validate={[required, minLength3, maxLength50]}
+            required={true}
+          />
+        </div>
+        <div className="col-md-6">
+          <Field
+            name="email"
+            type="email"
+            label="Email"
+            component={renderFormField}
+            placeholder="Email"
+            validate={[required, email]}
+            required={true}
+          />
+        </div>
+      </div>
       <div className="row mb-3">
         <div className="col-md-6">
           <Field
@@ -31,8 +74,7 @@ const SignUpForm = (props) => {
             label="First Name"
             component={renderFormField}
             placeholder="First Name"
-            validate={[required, name]}
-            required={true}
+            validate={[name]}
           />
         </div>
         <div className="col-md-6">
@@ -42,22 +84,17 @@ const SignUpForm = (props) => {
             label="Last Name"
             component={renderFormField}
             placeholder="Last Name"
-            validate={[required, name]}
-            required={true}
+            validate={[name]}
           />
         </div>
       </div>
       <Field
-        name="mobileNo"
-        type="number"
-        label="Mobile no"
+        name="phoneNumber"
+        type="tel"
+        label="Phone Number (Optional)"
         component={renderFormGroupField}
-        placeholder="Mobile no without country code"
-        icon={IconPhone}
-        validate={[required, maxLengthMobileNo, minLengthMobileNo, digit]}
-        required={true}
-        max="999999999999999"
-        min="9999"
+        placeholder="Phone number"
+        icon={IconEnvelope}
         className="mb-3"
       />
       <Field
@@ -77,9 +114,9 @@ const SignUpForm = (props) => {
         <button
           type="submit"
           className="btn btn-primary mb-3"
-          disabled={submitting}
+          disabled={submitting || auth.loading}
         >
-          Create
+          {auth.loading ? 'Creating Account...' : 'Create'}
         </button>
       </div>
       <Link className="float-start" to="/account/signin" title="Sign In">
@@ -114,7 +151,12 @@ const SignUpForm = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
 export default compose(
+  connect(mapStateToProps, { register }),
   reduxForm({
     form: "signup",
   })
