@@ -7,8 +7,10 @@ import TopMenu from "./components/TopMenu";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthInitializer from "./components/AuthInitializer";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import "./utils/resetAuth"; // Import reset utility
 import "./App.min.css";
+import "./styles/dark-theme.css"; // Import dark theme styles
 //const Header = lazy(() => import("./components/Header"));
 //const TopMenu = lazy(() => import("./components/TopMenu"));
 const HomeView = lazy(() => import("./views/Home"));
@@ -38,56 +40,58 @@ const BlogDetailView = lazy(() => import("./views/blog/Detail"));
 
 function App() {
   return (
-    <AuthInitializer>
-      <BrowserRouter>
-        <React.Fragment>
-          <Header />
-          <TopMenu />
-          <Suspense
-            fallback={
-              <div className="text-white text-center mt-3">Loading...</div>
-            }
-          >
-          <Routes>
-            <Route exact path="/" element={<HomeView/>} />
-            <Route exact path="/account/signin" element={<SignInView/>} />
-            <Route exact path="/account/signup" element={<SignUpView/>} />
-            <Route
-              exact
-              path="/account/forgotpassword"
-              element={<ForgotPasswordView/>}
-            />
-            <Route exact path="/account/profile" element={<MyProfileView/>} />
-            {/* <Route exact path="/account/orders" element={<AccountOrdersView />} /> */}
-            <Route exact path="/account/orders" element={<OrdersView/>} />
-            <Route exact path="/account/wishlist" element={<WishlistView/>} />
-            <Route
-              exact
-              path="/account/notification"
-              element={<NotificationView/>}
-            />
-            <Route exact path="/category" element={<ProductListView/>} />
-            <Route exact path="/product/detail" element={<ProductDetailView/>} />
-            <Route exact path="/star/zone" element={<StarZoneView/>} />
-            <Route exact path="/cart" element={<CartView/>} />
-            <Route exact path="/checkout" element={<CheckoutView />} />
-            <Route exact path="/orders" element={<OrdersView />} />
-            <Route exact path="/orders/:id" element={<OrderDetailView />} />
-            <Route exact path="/orders/:id/payment" element={<OrderPaymentView />} />
-            <Route exact path="/invoice" element={<InvoiceView />} />
-            <Route exact path="/documentation" element={<DocumentationView/>} />
-            <Route exact path="/contact-us" element={<ContactUsView/>} />
-            <Route exact path="/support" element={<SupportView/>} />
-            <Route exact path="/blog" element={<BlogView/>} />
-            <Route exact path="/blog/detail" element={<BlogDetailView/>} />
-            <Route exact path="/500" element={<InternalServerErrorView/>} />
-            <Route path="*" element={<NotFoundView/>} />
-          </Routes>
-        </Suspense>
-        <Footer />
-      </React.Fragment>
-    </BrowserRouter>
+    <ThemeProvider>
+      <AuthInitializer>
+        <BrowserRouter>
+          <React.Fragment>
+            <Header />
+            <TopMenu />
+            <Suspense
+              fallback={
+                <div className="text-white text-center mt-3">Loading...</div>
+              }
+            >
+            <Routes>
+              <Route exact path="/" element={<HomeView/>} />
+              <Route exact path="/account/signin" element={<SignInView/>} />
+              <Route exact path="/account/signup" element={<SignUpView/>} />
+              <Route
+                exact
+                path="/account/forgotpassword"
+                element={<ForgotPasswordView/>}
+              />
+              <Route exact path="/account/profile" element={<MyProfileView/>} />
+              {/* <Route exact path="/account/orders" element={<AccountOrdersView />} /> */}
+              <Route exact path="/account/orders" element={<OrdersView/>} />
+              <Route exact path="/account/wishlist" element={<WishlistView/>} />
+              <Route
+                exact
+                path="/account/notification"
+                element={<NotificationView/>}
+              />
+              <Route exact path="/category" element={<ProductListView/>} />
+              <Route exact path="/product/detail" element={<ProductDetailView/>} />
+              <Route exact path="/star/zone" element={<StarZoneView/>} />
+              <Route exact path="/cart" element={<CartView/>} />
+              <Route exact path="/checkout" element={<CheckoutView />} />
+              <Route exact path="/orders" element={<OrdersView />} />
+              <Route exact path="/orders/:id" element={<OrderDetailView />} />
+              <Route exact path="/orders/:id/payment" element={<OrderPaymentView />} />
+              <Route exact path="/invoice" element={<InvoiceView />} />
+              <Route exact path="/documentation" element={<DocumentationView/>} />
+              <Route exact path="/contact-us" element={<ContactUsView/>} />
+              <Route exact path="/support" element={<SupportView/>} />
+              <Route exact path="/blog" element={<BlogView/>} />
+              <Route exact path="/blog/detail" element={<BlogDetailView/>} />
+              <Route exact path="/500" element={<InternalServerErrorView/>} />
+              <Route path="*" element={<NotFoundView/>} />
+            </Routes>
+          </Suspense>
+          <Footer />
+        </React.Fragment>
+      </BrowserRouter>
     </AuthInitializer>
+    </ThemeProvider>
   );
 }
 

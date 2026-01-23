@@ -64,20 +64,29 @@ public class ProductService {
     public Page<ProductResponse> searchProducts(String name, Long categoryId, Long brandId, 
                                               Long storeId, String status, Double minRating, 
                                               Double minPrice, Double maxPrice, Pageable pageable) {
-        System.out.println("Searching products with params:");
-        System.out.println("  name: " + name);
-        System.out.println("  categoryId: " + categoryId);
-        System.out.println("  brandId: " + brandId);
-        System.out.println("  storeId: " + storeId);
-        System.out.println("  status: " + status);
-        System.out.println("  minRating: " + minRating);
-        System.out.println("  minPrice: " + minPrice);
-        System.out.println("  maxPrice: " + maxPrice);
+        
+        // Debug price filter only
+        if (minPrice != null || maxPrice != null) {
+            System.out.println("=== PRICE FILTER DEBUG ===");
+            System.out.println("  Price range: " + minPrice + " to " + maxPrice);
+        }
         
         Page<ProductResponse> results = productRepository.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable)
                 .map(this::convertToResponse);
         
-        System.out.println("Found " + results.getTotalElements() + " products matching search criteria");
+        // Debug price filter results only
+        if (minPrice != null || maxPrice != null) {
+            System.out.println("  Found " + results.getTotalElements() + " products in price range");
+            
+            results.getContent().stream().limit(3).forEach(product -> {
+                boolean inRange = (minPrice == null || product.getPrice().doubleValue() >= minPrice) && 
+                               (maxPrice == null || product.getPrice().doubleValue() <= maxPrice);
+                System.out.println("  " + product.getName() + " - $" + product.getPrice() + " - in range: " + inRange);
+            });
+            
+            System.out.println("=== END PRICE FILTER DEBUG ===");
+        }
+        
         return results;
     }
 

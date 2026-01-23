@@ -89,14 +89,20 @@ const ProductList = () => {
       }
     });
 
-    console.log('API params:', JSON.stringify(params, null, 2));
-    console.log('Current filters:', JSON.stringify(filters, null, 2));
-
-    if (filters.name || filters.categoryId || filters.brandId || filters.minRating || filters.minPrice || filters.maxPrice) {
-      console.log('Calling searchProducts with params');
+    // Debug which API will be called only when filters are applied
+    const shouldSearch = filters.name || filters.categoryId || filters.brandId || filters.minRating || filters.minPrice || filters.maxPrice;
+    
+    if (shouldSearch) {
+      console.log('Search filter applied:', {
+        name: filters.name,
+        categoryId: filters.categoryId,
+        brandId: filters.brandId,
+        minRating: filters.minRating,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice
+      });
       dispatch(searchProducts(params));
     } else {
-      console.log('Calling fetchProducts with params');
       dispatch(fetchProducts(params));
     }
   }, [currentPage, filters, dispatch]);
@@ -142,12 +148,11 @@ const ProductList = () => {
 
   // Handle filter change
   const onFilterChange = (newFilters) => {
-    console.log('ProductList: onFilterChange called with:', newFilters);
+    setCurrentPage(1);
     setFilters(prev => ({
       ...prev,
       ...newFilters
     }));
-    setCurrentPage(1);
   };
 
   // Format product data
