@@ -33,7 +33,12 @@ const TopMenu = () => {
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
                   <Link className="dropdown-item" to="/category?categoryId=1">
-                    <i className="bi bi-laptop me-2"></i>Laptops & Computers
+                    <i className="bi bi-laptop me-2"></i>Laptops
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category?categoryId=2">
+                    <i className="bi bi-pc-display me-2"></i>Desktop PCs
                   </Link>
                 </li>
                 <li>
@@ -47,8 +52,18 @@ const TopMenu = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link className="dropdown-item" to="/category?categoryId=5">
+                    <i className="bi bi-cpu me-2"></i>Processors
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category?categoryId=6">
+                    <i className="bi bi-memory me-2"></i>Memory (RAM)
+                  </Link>
+                </li>
+                <li>
                   <Link className="dropdown-item" to="/category?categoryId=7">
-                    <i className="bi bi-memory me-2"></i>Memory & Storage
+                    <i className="bi bi-hdd me-2"></i>Storage (SSD/HDD)
                   </Link>
                 </li>
                 <li>
@@ -57,8 +72,23 @@ const TopMenu = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/category?categoryId=5">
-                    <i className="bi bi-cpu me-2"></i>Processors
+                  <Link className="dropdown-item" to="/category?categoryId=9">
+                    <i className="bi bi-lightning-charge me-2"></i>Power Supplies
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category?categoryId=10">
+                    <i className="bi bi-box me-2"></i>Computer Cases
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category?categoryId=11">
+                    <i className="bi bi-fan me-2"></i>Cooling Systems
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/category?categoryId=12">
+                    <i className="bi bi-mouse me-2"></i>Gaming Peripherals
                   </Link>
                 </li>
                 <li>
@@ -66,7 +96,7 @@ const TopMenu = () => {
                 </li>
                 <li>
                   <Link className="dropdown-item" to="/category">
-                    <i className="bi bi-box me-2"></i>All Components
+                    <i className="bi bi-grid me-2"></i>All Components
                   </Link>
                 </li>
               </ul>
