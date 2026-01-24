@@ -18,12 +18,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
+        System.out.println("=== VALIDATION ERROR DEBUG ===");
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
+            System.out.println("Validation error - " + fieldName + ": " + errorMessage);
         });
+        System.out.println("All validation errors: " + errors);
+        System.out.println("=== END VALIDATION DEBUG ===");
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -43,6 +47,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        System.out.println("=== RUNTIME EXCEPTION DEBUG ===");
+        System.out.println("Error message: " + ex.getMessage());
+        ex.printStackTrace();
+        System.out.println("=== END RUNTIME DEBUG ===");
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

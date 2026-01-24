@@ -54,6 +54,20 @@ public class ProductController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Double minPrice,
             Pageable pageable) {
+        
+        System.out.println("=== PRODUCT CONTROLLER DEBUG ===");
+        System.out.println("Raw parameters received:");
+        System.out.println("  name: " + name);
+        System.out.println("  categoryId: " + categoryId);
+        System.out.println("  brandId: " + brandId);
+        System.out.println("  storeId: " + storeId);
+        System.out.println("  status: " + status);
+        System.out.println("  minRating: " + minRating);
+        System.out.println("  minPrice: " + minPrice);
+        System.out.println("  maxPrice: " + maxPrice);
+        System.out.println("  pageable: " + pageable);
+        System.out.println("=== END CONTROLLER DEBUG ===");
+        
         Page<ProductResponse> products = productService.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable);
         return ResponseEntity.ok(products);
     }

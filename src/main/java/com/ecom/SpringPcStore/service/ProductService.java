@@ -65,28 +65,52 @@ public class ProductService {
                                               Long storeId, String status, Double minRating, 
                                               Double minPrice, Double maxPrice, Pageable pageable) {
         
+        System.out.println("=== SEARCH PRODUCTS DEBUG ===");
+        System.out.println("  Parameters received:");
+        System.out.println("    name: " + name);
+        System.out.println("    categoryId: " + categoryId);
+        System.out.println("    brandId: " + brandId);
+        System.out.println("    storeId: " + storeId);
+        System.out.println("    status: " + status);
+        System.out.println("    minRating: " + minRating);
+        System.out.println("    minPrice: " + minPrice);
+        System.out.println("    maxPrice: " + maxPrice);
+        System.out.println("    pageable: " + pageable);
+        
         // Debug price filter only
         if (minPrice != null || maxPrice != null) {
-            System.out.println("=== PRICE FILTER DEBUG ===");
-            System.out.println("  Price range: " + minPrice + " to " + maxPrice);
+            System.out.println("  Price filter active: " + minPrice + " to " + maxPrice);
+        }
+        
+        // Debug rating filter only
+        if (minRating != null) {
+            System.out.println("  Rating filter active: " + minRating + " stars and up");
         }
         
         Page<ProductResponse> results = productRepository.searchProducts(name, categoryId, brandId, storeId, status, minRating, minPrice, maxPrice, pageable)
                 .map(this::convertToResponse);
         
+        System.out.println("  Found " + results.getTotalElements() + " products matching criteria");
+        
         // Debug price filter results only
         if (minPrice != null || maxPrice != null) {
-            System.out.println("  Found " + results.getTotalElements() + " products in price range");
-            
-            results.getContent().stream().limit(3).forEach(product -> {
+            System.out.println("  Price filter results:");
+            results.getContent().stream().limit(5).forEach(product -> {
                 boolean inRange = (minPrice == null || product.getPrice().doubleValue() >= minPrice) && 
                                (maxPrice == null || product.getPrice().doubleValue() <= maxPrice);
-                System.out.println("  " + product.getName() + " - $" + product.getPrice() + " - in range: " + inRange);
+                System.out.println("    " + product.getName() + " - $" + product.getPrice() + " - in range: " + inRange);
             });
-            
-            System.out.println("=== END PRICE FILTER DEBUG ===");
         }
         
+        // Debug rating filter results only
+        if (minRating != null) {
+            System.out.println("  Rating filter results:");
+            results.getContent().stream().limit(5).forEach(product -> {
+                System.out.println("    " + product.getName() + " - Rating: " + product.getAverageRating() + " - meets min " + minRating + ": " + (product.getAverageRating() >= minRating));
+            });
+        }
+        
+        System.out.println("=== END SEARCH DEBUG ===");
         return results;
     }
 

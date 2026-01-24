@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import AuthInitializer from "./components/AuthInitializer";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import "./utils/resetAuth"; // Import reset utility
+import "./utils/quickAuthCheck"; // Import quick auth check for debugging
 import "./App.min.css";
 import "./styles/dark-theme.css"; // Import dark theme styles
 //const Header = lazy(() => import("./components/Header"));

@@ -23,14 +23,14 @@ const FilterPrice = ({ onFilterChange }) => {
   const updateURL = (minPrice, maxPrice) => {
     const urlParams = new URLSearchParams(location.search);
     
-    if (minPrice !== null) {
-      urlParams.set('minPrice', minPrice);
+    if (minPrice !== null && minPrice !== undefined) {
+      urlParams.set('minPrice', minPrice.toString());
     } else {
       urlParams.delete('minPrice');
     }
     
-    if (maxPrice !== null) {
-      urlParams.set('maxPrice', maxPrice);
+    if (maxPrice !== null && maxPrice !== undefined) {
+      urlParams.set('maxPrice', maxPrice.toString());
     } else {
       urlParams.delete('maxPrice');
     }
@@ -58,7 +58,10 @@ const FilterPrice = ({ onFilterChange }) => {
   };
 
   const handleQuickSelect = (min, max) => {
-    setPriceRange({ min: min.toString(), max: max.toString() });
+    setPriceRange({ 
+      min: min !== null ? min.toString() : '', 
+      max: max !== null ? max.toString() : '' 
+    });
     
     // Update URL
     updateURL(min, max);

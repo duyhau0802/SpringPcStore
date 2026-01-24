@@ -34,6 +34,9 @@ export const productAPI = {
       brandId,
       storeId,
       status = 'ACTIVE',
+      minRating,
+      minPrice,
+      maxPrice,
       page = 0,
       size = 12,
       sort = 'id,desc'
@@ -46,6 +49,9 @@ export const productAPI = {
         brandId,
         storeId,
         status,
+        minRating,
+        minPrice,
+        maxPrice,
         page,
         size,
         sort

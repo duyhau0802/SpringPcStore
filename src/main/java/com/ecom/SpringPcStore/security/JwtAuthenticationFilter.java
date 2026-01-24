@@ -30,13 +30,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
 
+        System.out.println("=== JWT FILTER DEBUG ===");
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Auth Header: " + (authHeader != null ? authHeader.substring(0, Math.min(20, authHeader.length())) + "..." : "null"));
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("No Bearer token found");
             filterChain.doFilter(request, response);
             return;
         }
 
         jwt = authHeader.substring(7);
         username = jwtService.extractUsername(jwt);
+        
+        System.out.println("Extracted username: " + username);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
@@ -47,13 +54,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                    System.out.println("JWT Authentication successful for user: " + username);
+                } else {
+                    System.out.println("JWT Token validation failed for user: " + username);
                 }
             } catch (Exception e) {
                 System.out.println("JWT Authentication error: " + e.getMessage());
                 e.printStackTrace();
             }
+        } else {
+            System.out.println("Username is null or user already authenticated");
         }
 
+        System.out.println("=== END JWT FILTER DEBUG ===");
         filterChain.doFilter(request, response);
     }
 }

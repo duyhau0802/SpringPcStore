@@ -22,8 +22,21 @@ public class AuthController {
     // =======================
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        AuthResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+        System.out.println("=== LOGIN REQUEST DEBUG ===");
+        System.out.println("UsernameOrEmail: " + request.getUsernameOrEmail());
+        System.out.println("Password provided: " + (request.getPassword() != null ? "YES" : "NO"));
+        
+        try {
+            AuthResponse response = authService.login(request);
+            System.out.println("Login successful for user: " + request.getUsernameOrEmail());
+            System.out.println("=== END LOGIN DEBUG ===");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.out.println("Login failed: " + e.getMessage());
+            e.printStackTrace();
+            System.out.println("=== END LOGIN DEBUG ===");
+            throw e;
+        }
     }
 
     // =======================

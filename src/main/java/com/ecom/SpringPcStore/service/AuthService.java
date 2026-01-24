@@ -55,31 +55,52 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-
+        System.out.println("=== AUTH SERVICE LOGIN DEBUG ===");
+        System.out.println("Login identifier: " + request.getUsernameOrEmail());
+        System.out.println("Password provided: " + (request.getPassword() != null && !request.getPassword().isEmpty() ? "YES" : "NO"));
+        
         User user;
         String loginIdentifier = request.getUsernameOrEmail();
         
         // Try to find user by username first, then by email
         if (loginIdentifier.contains("@")) {
             // Login with email
+            System.out.println("Attempting login with email: " + loginIdentifier);
             user = userRepository.findByEmail(loginIdentifier)
-                    .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                    .orElseThrow(() -> {
+                        System.out.println("User not found with email: " + loginIdentifier);
+                        return new RuntimeException("Invalid credentials");
+                    });
         } else {
             // Login with username
+            System.out.println("Attempting login with username: " + loginIdentifier);
             user = userRepository.findByUsername(loginIdentifier)
-                    .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                    .orElseThrow(() -> {
+                        System.out.println("User not found with username: " + loginIdentifier);
+                        return new RuntimeException("Invalid credentials");
+                    });
         }
 
+        System.out.println("Found user: " + user.getUsername() + " (ID: " + user.getId() + ")");
+        System.out.println("User status: " + user.getStatus());
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            System.out.println("Password mismatch for user: " + user.getUsername());
             throw new RuntimeException("Invalid credentials");
         }
 
+        System.out.println("Password match successful for user: " + user.getUsername());
+        
         String token = jwtService.generateToken(user);
+        System.out.println("JWT token generated successfully");
         
         // Extract roles from user
         Set<String> roles = user.getUserRoles().stream()
                 .map(userRole -> userRole.getRole().getName())
                 .collect(Collectors.toSet());
+        
+        System.out.println("User roles: " + roles);
+        System.out.println("=== END AUTH SERVICE DEBUG ===");
         
         return new AuthResponse(token, user.getId(), user.getUsername(), user.getEmail(), roles);
     }

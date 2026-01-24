@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, searchProducts } from "../../redux/actions/productActions";
+import { categoryAPI } from "../../services/categoryAPI";
 import Paging from "../../components/Paging";
 import Breadcrumb from "../../components/Breadcrumb";
 import FilterCategory from "../../components/filter/Category";
@@ -16,6 +17,7 @@ import { formatPrice, calculateOriginalPrice, calculateDiscountPrice, qualifiesF
 const ProductList = () => {
   const dispatch = useDispatch();
   const { products, loading, error, pagination } = useSelector(state => state.products);
+  const [categories, setCategories] = useState([]);
 
   // State management
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,16 +80,18 @@ const ProductList = () => {
       storeId: 1, // Default store
       status: 'ACTIVE',
       minRating: filters.minRating || undefined,
-      minPrice: filters.minPrice || undefined,
-      maxPrice: filters.maxPrice || undefined
+      minPrice: filters.minPrice, // Keep null values for price filters
+      maxPrice: filters.maxPrice  // Keep null values for price filters
     };
 
-    // Remove null/undefined values
+    // Remove undefined values only (keep null values for price filters)
     Object.keys(params).forEach(key => {
-      if (params[key] === null || params[key] === undefined || params[key] === '') {
+      if (params[key] === undefined || params[key] === '') {
         delete params[key];
       }
     });
+
+    console.log('API params before sending:', JSON.stringify(params, null, 2));
 
     // Debug which API will be called only when filters are applied
     const shouldSearch = filters.name || filters.categoryId || filters.brandId || filters.minRating || filters.minPrice || filters.maxPrice;
@@ -155,6 +159,38 @@ const ProductList = () => {
     }));
   };
 
+  // Get category name by ID
+  const getCategoryName = (categoryId) => {
+    if (!categoryId || !categories.length) return null;
+    const category = categories.find(cat => cat.id === parseInt(categoryId));
+    return category ? category.name : null;
+  };
+
+  // Fetch categories
+  const fetchCategoriesData = async () => {
+    try {
+      const response = await categoryAPI.getAllCategories();
+      setCategories(response.data || []);
+    } catch (error) {
+      console.error('Failed to load categories:', error);
+      // Fallback to tech categories
+      setCategories([
+        { id: 1, name: "Laptops" },
+        { id: 2, name: "Desktop PCs" },
+        { id: 3, name: "Monitors" },
+        { id: 4, name: "Graphics Cards" },
+        { id: 5, name: "Processors" },
+        { id: 6, name: "Memory (RAM)" },
+        { id: 7, name: "Storage (SSD/HDD)" },
+        { id: 8, name: "Motherboards" },
+        { id: 9, name: "Power Supplies" },
+        { id: 10, name: "Computer Cases" },
+        { id: 11, name: "Cooling Systems" },
+        { id: 12, name: "Gaming Peripherals" }
+      ]);
+    }
+  };
+
   // Format product data
   const formatProduct = (product) => {
     // Transform backend product data to match frontend component expectations
@@ -194,6 +230,8 @@ const ProductList = () => {
 
   // Effects
   useEffect(() => {
+    // Fetch categories on mount
+    fetchCategoriesData();
     parseUrlParams();
     loadProducts();
   }, []); // Only run once on mount
@@ -289,14 +327,29 @@ const ProductList = () => {
           </span>
         </div>
       </div>
-      <Breadcrumb />
+      <Breadcrumb 
+        categoryId={filters.categoryId}
+        categoryName={getCategoryName(filters.categoryId)}
+      />
       <div className="container-fluid mb-3">
         <div className="row">
           <div className="col-md-3">
             <FilterCategory onFilterChange={onFilterChange} />
             <FilterPrice onFilterChange={onFilterChange} />
             <FilterStar onFilterChange={onFilterChange} />
-            <FilterClear onClear={() => onFilterChange({})} />
+            <FilterClear onClear={() => {
+              // Clear all filters
+              setFilters({
+                name: null,
+                categoryId: null,
+                brandId: null,
+                minRating: null,
+                minPrice: null,
+                maxPrice: null,
+                sort: 'id,desc'
+              });
+              setCurrentPage(1);
+            }} />
             <CardServices />
           </div>
           <div className="col-md-9">
