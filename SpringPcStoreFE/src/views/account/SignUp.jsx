@@ -1,10 +1,27 @@
 import { lazy } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { register } from "../../redux/actions/authActions";
+
 const SingUpForm = lazy(() => import("../../components/account/SignUpForm"));
 
-const SignUpView = () => {
+const SignUpView = ({ register }) => {
   const onSubmit = async (values) => {
-    alert(JSON.stringify(values));
+    const userData = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      fullName: `${values.firstName} ${values.lastName}`,
+      phoneNumber: values.phoneNumber || '',
+    };
+    
+    const result = await register(userData);
+    if (result.success) {
+      alert('Registration successful! Please sign in.');
+      window.location.href = '/account/signin';
+    } else {
+      alert(result.error);
+    }
   };
   return (
     <div className="container my-3">
@@ -34,4 +51,4 @@ const SignUpView = () => {
   );
 };
 
-export default SignUpView;
+export default connect(null, { register })(SignUpView);

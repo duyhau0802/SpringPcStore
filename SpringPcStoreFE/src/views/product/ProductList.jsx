@@ -175,18 +175,14 @@ const ProductList = () => {
       console.error('Failed to load categories:', error);
       // Fallback to tech categories
       setCategories([
-        { id: 1, name: "Laptops" },
-        { id: 2, name: "Desktop PCs" },
-        { id: 3, name: "Monitors" },
-        { id: 4, name: "Graphics Cards" },
-        { id: 5, name: "Processors" },
-        { id: 6, name: "Memory (RAM)" },
-        { id: 7, name: "Storage (SSD/HDD)" },
-        { id: 8, name: "Motherboards" },
-        { id: 9, name: "Power Supplies" },
-        { id: 10, name: "Computer Cases" },
-        { id: 11, name: "Cooling Systems" },
-        { id: 12, name: "Gaming Peripherals" }
+        { id: 1, name: "Laptop" },
+        { id: 2, name: "Headset" },
+        { id: 3, name: "Phone" },
+        { id: 4, name: "TV" },
+        { id: 5, name: "Display" },
+        { id: 6, name: "HDD" },
+        { id: 7, name: "UPC Scan" },
+        { id: 8, name: "Tools" }
       ]);
     }
   };
@@ -235,6 +231,56 @@ const ProductList = () => {
     parseUrlParams();
     loadProducts();
   }, []); // Only run once on mount
+
+  // Listen for category filter changes from header
+  useEffect(() => {
+    const handleCategoryFilterChange = (event) => {
+      const { categoryId } = event.detail;
+      console.log('Category filter changed from header:', categoryId);
+      
+      // Update filters
+      setFilters(prev => ({
+        ...prev,
+        categoryId: categoryId ? parseInt(categoryId) : null
+      }));
+      setCurrentPage(1);
+      
+      // Update URL without triggering page reload
+      const url = categoryId ? `/category?categoryId=${categoryId}` : '/category';
+      window.history.pushState({}, '', url);
+    };
+
+    const handleFilterChange = (event) => {
+      const filterData = event.detail;
+      console.log('Filter changed from header:', filterData);
+      
+      // Update filters
+      setFilters(prev => ({
+        ...prev,
+        ...filterData
+      }));
+      setCurrentPage(1);
+      
+      // Update URL without triggering page reload
+      const params = new URLSearchParams();
+      Object.keys(filterData).forEach(key => {
+        if (filterData[key] !== null && filterData[key] !== undefined) {
+          params.set(key, filterData[key]);
+        }
+      });
+      
+      const url = `/category${params.toString() ? '?' + params.toString() : ''}`;
+      window.history.pushState({}, '', url);
+    };
+
+    window.addEventListener('categoryFilterChanged', handleCategoryFilterChange);
+    window.addEventListener('filterChanged', handleFilterChange);
+    
+    return () => {
+      window.removeEventListener('categoryFilterChanged', handleCategoryFilterChange);
+      window.removeEventListener('filterChanged', handleFilterChange);
+    };
+  }, []);
 
   useEffect(() => {
     const currentUrl = window.location.search;

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../redux/actions/authActions";
 import { fetchCart } from "../redux/actions/cartActions";
-import ThemeToggle from "./ThemeToggle";
 const Search = lazy(() => import("./Search"));
 
 const Header = ({ auth, logout, cart, fetchCart }) => {
@@ -13,12 +12,18 @@ const Header = ({ auth, logout, cart, fetchCart }) => {
   };
 
   useEffect(() => {
+    console.log('Header - useEffect called');
+    console.log('Auth state:', auth);
+    
     // Fetch cart data when user is authenticated
     if (auth.isAuthenticated && auth.user) {
+      console.log('User is authenticated, fetching cart...');
       fetchCart().catch(error => {
         console.error('Failed to fetch cart:', error);
         // Don't show error to user, just log it
       });
+    } else {
+      console.log('User not authenticated, not fetching cart');
     }
   }, [auth.isAuthenticated, auth.user, fetchCart]);
 
@@ -31,7 +36,7 @@ const Header = ({ auth, logout, cart, fetchCart }) => {
               <div className="d-flex align-items-center justify-content-center">
                 <i className="bi bi-cpu-fill text-primary me-2" style={{fontSize: '1.5rem'}}></i>
                 <div>
-                  <div className="fw-bold">Tech Store</div>
+                  <div className="fw-bold text-dark">Tech Store</div>
                   <small className="text-muted">Computer Components</small>
                 </div>
               </div>
@@ -42,7 +47,6 @@ const Header = ({ auth, logout, cart, fetchCart }) => {
           </div>
           <div className="col-md-4">
             <div className="d-flex align-items-center justify-content-end">
-              <ThemeToggle />
               <div className="position-relative me-3">
                 <Link to="/cart" className="btn btn-outline-primary position-relative">
                   <i className="bi bi-cart3"></i>

@@ -74,7 +74,8 @@ const SignUpForm = ({ handleSubmit, submitting, onSubmit, submitFailed, register
             label="First Name"
             component={renderFormField}
             placeholder="First Name"
-            validate={[name]}
+            validate={[required, name]}
+            required={true}
           />
         </div>
         <div className="col-md-6">
@@ -84,7 +85,8 @@ const SignUpForm = ({ handleSubmit, submitting, onSubmit, submitFailed, register
             label="Last Name"
             component={renderFormField}
             placeholder="Last Name"
-            validate={[name]}
+            validate={[required, name]}
+            required={true}
           />
         </div>
       </div>

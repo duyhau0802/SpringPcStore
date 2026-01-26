@@ -47,6 +47,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
+                // Check if token is expired first
+                if (jwtService.isTokenExpired(jwt)) {
+                    System.out.println("JWT Token expired for user: " + username);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.getWriter().write(
+                        "{\"error\": \"Token expired\", \"message\": \"Your session has expired. Please login again.\"}"
+                    );
+                    return;
+                }
+
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
                 if (jwtService.validateToken(jwt, userDetails)) {
@@ -57,10 +68,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     System.out.println("JWT Authentication successful for user: " + username);
                 } else {
                     System.out.println("JWT Token validation failed for user: " + username);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.getWriter().write(
+                        "{\"error\": \"Invalid token\", \"message\": \"Invalid authentication token.\"}"
+                    );
+                    return;
                 }
+            } catch (io.jsonwebtoken.ExpiredJwtException e) {
+                System.out.println("JWT Token expired (Exception): " + e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                    "{\"error\": \"Token expired\", \"message\": \"Your session has expired. Please login again.\"}"
+                );
+                return;
             } catch (Exception e) {
                 System.out.println("JWT Authentication error: " + e.getMessage());
-                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                    "{\"error\": \"Authentication failed\", \"message\": \"Authentication token is invalid.\"}"
+                );
+                return;
             }
         } else {
             System.out.println("Username is null or user already authenticated");

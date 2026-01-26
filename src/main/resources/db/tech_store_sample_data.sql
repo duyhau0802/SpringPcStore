@@ -67,19 +67,15 @@ INSERT INTO user_role (user_id, role_id) VALUES
 (3, 2), (4, 2), (5, 2), (6, 2), (7, 2); -- Other users - USER role
 
 -- Insert Categories for Tech Store
-INSERT INTO category (id, name, parent_id) VALUES
-(1, 'Laptops', NULL),
-(2, 'Desktop PCs', NULL),
-(3, 'Monitors', NULL),
-(4, 'Graphics Cards', NULL),
-(5, 'Processors', NULL),
-(6, 'Memory (RAM)', NULL),
-(7, 'Storage (SSD/HDD)', NULL),
-(8, 'Motherboards', NULL),
-(9, 'Power Supplies', NULL),
-(10, 'Computer Cases', NULL),
-(11, 'Cooling Systems', NULL),
-(12, 'Gaming Peripherals', NULL);
+INSERT INTO category (name, description, parent_id, created_at, updated_at) VALUES
+('Laptop', 'Laptops and notebook computers for work and gaming', NULL, NOW(), NOW()),
+('Headset', 'Audio headsets and headphones for music and gaming', NULL, NOW(), NOW()),
+('Phone', 'Smartphones and mobile phones', NULL, NOW(), NOW()),
+('TV', 'Televisions and smart TVs for home entertainment', NULL, NOW(), NOW()),
+('Display', 'Computer monitors and displays', NULL, NOW(), NOW()),
+('HDD', 'Hard disk drives and storage solutions', NULL, NOW(), NOW()),
+('UPC Scan', 'Barcode scanners and UPC scanning equipment', NULL, NOW(), NOW()),
+('Tools', 'Tools and equipment for computer repair and maintenance', NULL, NOW(), NOW());
 
 -- Insert Brands
 INSERT INTO brand (id, name) VALUES
@@ -104,9 +100,9 @@ INSERT INTO brand (id, name) VALUES
 INSERT INTO store (id, name, description, owner_id, status) VALUES
 (1, 'TechHub Main Store', 'Your trusted computer components store', 1, 'ACTIVE');
 
--- Insert Products (50 products for pagination testing)
+-- Insert Products (56 products for new categories)
 INSERT INTO product (id, store_id, category_id, brand_id, name, price, status, description, created_at) VALUES
--- Laptops (1-8)
+-- Laptop (1-8)
 (1, 1, 1, 14, 'Dell XPS 15 Laptop', 1299.99, 'ACTIVE', 'High-performance laptop with Intel Core i7', NOW()),
 (2, 1, 1, 16, 'Lenovo ThinkPad X1 Carbon', 1499.99, 'ACTIVE', 'Business laptop with premium build quality', NOW()),
 (3, 1, 1, 1, 'ASUS ROG Strix G15', 1199.99, 'ACTIVE', 'Gaming laptop with RTX graphics', NOW()),
@@ -116,65 +112,69 @@ INSERT INTO product (id, store_id, category_id, brand_id, name, price, status, d
 (7, 1, 1, 14, 'Dell Inspiron 14', 699.99, 'ACTIVE', 'Affordable laptop for everyday use', NOW()),
 (8, 1, 1, 16, 'Lenovo Legion 5', 1099.99, 'ACTIVE', 'Gaming laptop with AMD processor', NOW()),
 
--- Desktop PCs (9-14)
-(9, 1, 2, 1, 'ASUS ROG Strix G35', 1899.99, 'ACTIVE', 'Gaming desktop with liquid cooling', NOW()),
-(10, 1, 2, 2, 'MSI Trident X', 1699.99, 'ACTIVE', 'Compact gaming desktop', NOW()),
-(11, 1, 2, 14, 'Dell Alienware Aurora', 2199.99, 'ACTIVE', 'High-end gaming desktop', NOW()),
-(12, 1, 2, 16, 'Lenovo ThinkCentre M70q', 599.99, 'ACTIVE', 'Business mini desktop', NOW()),
-(13, 1, 2, 15, 'HP Pavilion Desktop', 799.99, 'ACTIVE', 'Family desktop computer', NOW()),
-(14, 1, 2, 1, 'ASUS ExpertCenter D700', 899.99, 'ACTIVE', 'Business tower desktop', NOW()),
+-- Headset (9-14)
+(9, 1, 2, 12, 'Razer BlackShark V2 Pro', 179.99, 'ACTIVE', 'Wireless gaming headset with THX spatial audio', NOW()),
+(10, 1, 2, 13, 'Logitech G Pro X', 249.99, 'ACTIVE', 'Professional gaming headset with Blue VO!CE', NOW()),
+(11, 1, 2, 1, 'ASUS ROG Strix Go 2.4', 129.99, 'ACTIVE', 'Wireless gaming headset with ANC', NOW()),
+(12, 1, 2, 2, 'MSI Immerse GH70', 149.99, 'ACTIVE', 'Wireless gaming headset with vibration', NOW()),
+(13, 1, 2, 7, 'Corsair Virtuoso RGB Wireless', 199.99, 'ACTIVE', 'High-fidelity wireless gaming headset', NOW()),
+(14, 1, 2, 8, 'Samsung Galaxy Buds Pro', 229.99, 'ACTIVE', 'True wireless earbuds with ANC', NOW()),
 
--- Monitors (15-20)
-(15, 1, 3, 1, 'ASUS ROG Swift PG279Q', 799.99, 'ACTIVE', '27" 144Hz gaming monitor', NOW()),
-(16, 1, 3, 2, 'MSI Optix MAG274QRF', 499.99, 'ACTIVE', '27" 165Hz gaming monitor', NOW()),
-(17, 1, 3, 8, 'Samsung Odyssey G7', 699.99, 'ACTIVE', '27" 240Hz curved gaming monitor', NOW()),
-(18, 1, 3, 14, 'Dell UltraSharp U2720Q', 599.99, 'ACTIVE', '27" 4K professional monitor', NOW()),
-(19, 1, 3, 16, 'Lenovo ThinkVision P27h-20', 399.99, 'ACTIVE', '27" QHD business monitor', NOW()),
-(20, 1, 3, 15, 'HP EliteDisplay E273', 299.99, 'ACTIVE', '27" FHD office monitor', NOW()),
+-- Phone (15-22)
+(15, 1, 3, 8, 'Samsung Galaxy S24 Ultra', 1299.99, 'ACTIVE', 'Premium Android phone with S Pen', NOW()),
+(16, 1, 3, 14, 'Dell Mobile Precision', 899.99, 'ACTIVE', 'Business smartphone with enterprise features', NOW()),
+(17, 1, 3, 1, 'ASUS ROG Phone 8', 1099.99, 'ACTIVE', 'Gaming phone with advanced cooling', NOW()),
+(18, 1, 3, 16, 'Lenovo Legion Phone Duel 2', 799.99, 'ACTIVE', 'Gaming phone with dual batteries', NOW()),
+(19, 1, 3, 15, 'HP Elite Dragonfly', 1199.99, 'ACTIVE', 'Premium business laptop-phone hybrid', NOW()),
+(20, 1, 3, 8, 'Samsung Galaxy Tab S9', 999.99, 'ACTIVE', 'Premium Android tablet for productivity', NOW()),
+(21, 1, 3, 1, 'ASUS Zenfone 10', 699.99, 'ACTIVE', 'Compact flagship Android phone', NOW()),
+(22, 1, 3, 2, 'MSI Claw', 699.99, 'ACTIVE', 'Handheld gaming device', NOW()),
 
--- Graphics Cards (21-26)
-(21, 1, 4, 6, 'NVIDIA GeForce RTX 4090', 1599.99, 'ACTIVE', 'Flagship gaming graphics card', NOW()),
-(22, 1, 4, 6, 'NVIDIA GeForce RTX 4080', 1199.99, 'ACTIVE', 'High-end gaming graphics card', NOW()),
-(23, 1, 4, 6, 'NVIDIA GeForce RTX 4070 Ti', 799.99, 'ACTIVE', 'Mid-range gaming graphics card', NOW()),
-(24, 1, 4, 5, 'AMD Radeon RX 7900 XTX', 999.99, 'ACTIVE', 'AMD flagship graphics card', NOW()),
-(25, 1, 4, 5, 'AMD Radeon RX 7800 XT', 499.99, 'ACTIVE', 'AMD mid-range graphics card', NOW()),
-(26, 1, 4, 1, 'ASUS TUF Gaming RTX 4060', 399.99, 'ACTIVE', 'Budget gaming graphics card', NOW()),
+-- TV (23-28)
+(23, 1, 4, 8, 'Samsung 65" QLED 4K Smart TV', 1499.99, 'ACTIVE', 'Premium QLED TV with HDR10+', NOW()),
+(24, 1, 4, 14, 'Dell 55" 4K UltraSharp Monitor', 899.99, 'ACTIVE', 'Professional 4K monitor for office', NOW()),
+(25, 1, 4, 1, 'ASUS ROG Strix 43" Gaming Monitor', 1299.99, 'ACTIVE', 'Large gaming monitor with 144Hz', NOW()),
+(26, 1, 4, 16, 'Lenovo ThinkVision 65" 4K Display', 1199.99, 'ACTIVE', 'Business display with video conferencing', NOW()),
+(27, 1, 4, 15, 'HP Omen 27" Gaming Monitor', 499.99, 'ACTIVE', 'Gaming monitor with 1ms response time', NOW()),
+(28, 1, 4, 2, 'MSI Optix MAG321CQR', 599.99, 'ACTIVE', '32" curved gaming monitor', NOW()),
 
--- Processors (27-32)
-(27, 1, 5, 4, 'Intel Core i9-13900K', 599.99, 'ACTIVE', 'Flagship desktop processor', NOW()),
-(28, 1, 5, 4, 'Intel Core i7-13700K', 419.99, 'ACTIVE', 'High-end desktop processor', NOW()),
-(29, 1, 5, 4, 'Intel Core i5-13600K', 319.99, 'ACTIVE', 'Mid-range desktop processor', NOW()),
-(30, 1, 5, 5, 'AMD Ryzen 9 7950X', 549.99, 'ACTIVE', 'AMD flagship desktop processor', NOW()),
-(31, 1, 5, 5, 'AMD Ryzen 7 7700X', 399.99, 'ACTIVE', 'AMD high-end desktop processor', NOW()),
-(32, 1, 5, 5, 'AMD Ryzen 5 7600X', 299.99, 'ACTIVE', 'AMD mid-range desktop processor', NOW()),
+-- Display (29-35)
+(29, 1, 5, 1, 'ASUS ProArt PA279QV', 599.99, 'ACTIVE', '27" 4K professional monitor', NOW()),
+(30, 1, 5, 2, 'MSI Prestige PS341WU', 1299.99, 'ACTIVE', '34" ultrawide professional monitor', NOW()),
+(31, 1, 5, 8, 'Samsung Odyssey G9', 1499.99, 'ACTIVE', '49" super ultrawide gaming monitor', NOW()),
+(32, 1, 5, 14, 'Dell UltraSharp U3223QZ', 999.99, 'ACTIVE', '32" 4K USB-C monitor', NOW()),
+(33, 1, 5, 16, 'Lenovo ThinkVision P32p-20', 799.99, 'ACTIVE', '32" 4K professional display', NOW()),
+(34, 1, 5, 15, 'HP EliteDisplay E344c', 699.99, 'ACTIVE', '34" curved business monitor', NOW()),
+(35, 1, 5, 7, 'Corsair Xeneon 32QHD165', 799.99, 'ACTIVE', '32" QHD gaming monitor', NOW()),
 
--- Memory (33-36)
-(33, 1, 6, 7, 'Corsair Vengeance RGB Pro 32GB', 159.99, 'ACTIVE', 'DDR4-3200 RGB RAM kit', NOW()),
-(34, 1, 6, 7, 'Corsair Dominator Platinum 32GB', 249.99, 'ACTIVE', 'DDR4-3600 high-performance RAM', NOW()),
-(35, 1, 6, 8, 'Samsung DDR5 32GB', 299.99, 'ACTIVE', 'DDR5-4800 RAM kit', NOW()),
-(36, 1, 6, 1, 'ASUS ROG Strix 32GB', 199.99, 'ACTIVE', 'DDR4-3600 gaming RAM', NOW()),
+-- HDD (36-42)
+(36, 1, 6, 9, 'WD Black 4TB HDD', 129.99, 'ACTIVE', '7200RPM high-performance hard drive', NOW()),
+(37, 1, 6, 10, 'Seagate IronWolf 8TB NAS HDD', 299.99, 'ACTIVE', 'NAS-optimized hard drive', NOW()),
+(38, 1, 6, 8, 'Samsung 870 EVO 2TB SSD', 199.99, 'ACTIVE', 'SATA SSD for laptops and desktops', NOW()),
+(39, 1, 6, 9, 'WD Blue 1TB HDD', 59.99, 'ACTIVE', 'Reliable storage for everyday use', NOW()),
+(40, 1, 6, 10, 'Seagate Barracuda 5TB HDD', 149.99, 'ACTIVE', 'High-capacity storage solution', NOW()),
+(41, 1, 6, 8, 'Samsung 980 Pro 2TB NVMe', 249.99, 'ACTIVE', 'Gen4 NVMe SSD for gaming', NOW()),
+(42, 1, 6, 7, 'Corsair MP600 2TB NVMe', 279.99, 'ACTIVE', 'High-speed Gen4 NVMe SSD', NOW()),
 
--- Storage (37-42)
-(37, 1, 7, 8, 'Samsung 980 Pro 1TB', 149.99, 'ACTIVE', 'NVMe Gen4 SSD', NOW()),
-(38, 1, 7, 9, 'WD Black SN850X 1TB', 129.99, 'ACTIVE', 'NVMe Gen4 gaming SSD', NOW()),
-(39, 1, 7, 10, 'Seagate FireCuda 530 1TB', 139.99, 'ACTIVE', 'NVMe Gen4 SSD', NOW()),
-(40, 1, 7, 8, 'Samsung 870 EVO 1TB', 99.99, 'ACTIVE', 'SATA SSD', NOW()),
-(41, 1, 7, 9, 'WD Blue 2TB HDD', 59.99, 'ACTIVE', '7200RPM hard drive', NOW()),
-(42, 1, 7, 10, 'Seagate Barracuda 4TB HDD', 89.99, 'ACTIVE', '5400RPM hard drive', NOW()),
+-- UPC Scan (43-49)
+(43, 1, 7, 13, 'Logitech Zebra DS2208', 349.99, 'ACTIVE', 'USB barcode scanner with 1D/2D support', NOW()),
+(44, 1, 7, 12, 'Razer Commerce Scanner', 499.99, 'ACTIVE', 'Gaming-themed barcode scanner', NOW()),
+(45, 1, 7, 1, 'ASUS Business Scanner Pro', 599.99, 'ACTIVE', 'Professional document scanner', NOW()),
+(46, 1, 7, 2, 'MSI Retail Scanner', 399.99, 'ACTIVE', 'Point-of-sale barcode scanner', NOW()),
+(47, 1, 7, 8, 'Samsung Barcode Scanner BIXOLON', 449.99, 'ACTIVE', 'Industrial-grade scanner', NOW()),
+(48, 1, 7, 14, 'Dell Wyse Barcode Scanner', 549.99, 'ACTIVE', 'Enterprise barcode scanner', NOW()),
+(49, 1, 7, 16, 'Lenovo Barcode Scanner', 379.99, 'ACTIVE', 'Business barcode scanner', NOW()),
 
--- Motherboards (43-46)
-(43, 1, 8, 1, 'ASUS ROG Strix Z790-E', 449.99, 'ACTIVE', 'Intel Z790 gaming motherboard', NOW()),
-(44, 1, 8, 3, 'Gigabyte X670 Aorus Elite', 329.99, 'ACTIVE', 'AMD X670 gaming motherboard', NOW()),
-(45, 1, 8, 2, 'MSI MAG B760 Tomahawk', 199.99, 'ACTIVE', 'Intel B760 motherboard', NOW()),
-(46, 1, 8, 1, 'ASUS TUF Gaming B650-Plus', 179.99, 'ACTIVE', 'AMD B650 motherboard', NOW()),
+-- Tools (50-56)
+(50, 1, 8, 11, 'Cooler Master Toolkit', 89.99, 'ACTIVE', 'Complete PC building toolkit', NOW()),
+(51, 1, 8, 7, 'Corsair PC Building Kit', 119.99, 'ACTIVE', 'Professional PC assembly tools', NOW()),
+(52, 1, 8, 13, 'Logitech Precision Screwdriver Set', 49.99, 'ACTIVE', 'Magnetic screwdriver set for electronics', NOW()),
+(53, 1, 8, 12, 'Razer Repair Toolkit', 79.99, 'ACTIVE', 'Gaming device repair tools', NOW()),
+(54, 1, 8, 1, 'ASUS Diagnostic Tools', 199.99, 'ACTIVE', 'Professional hardware diagnostic kit', NOW()),
+(55, 1, 8, 2, 'MSI Maintenance Tools', 149.99, 'ACTIVE', 'PC maintenance and cleaning kit', NOW()),
+(56, 1, 8, 8, 'Samsung Repair Tools', 129.99, 'ACTIVE', 'Mobile device repair toolkit', NOW());
 
--- Power Supplies (47-50)
-(47, 1, 9, 7, 'Corsair RM850x', 119.99, 'ACTIVE', '850W 80+ Gold PSU', NOW()),
-(48, 1, 9, 11, 'Cooler Master MWE 750', 79.99, 'ACTIVE', '750W 80+ Bronze PSU', NOW()),
-(49, 1, 9, 7, 'Corsair AX1200', 249.99, 'ACTIVE', '1200W 80+ Platinum PSU', NOW()),
-(50, 1, 9, 11, 'Cooler Master V750', 99.99, 'ACTIVE', '750W 80+ Gold PSU', NOW());
-
--- Insert Inventory for all products
+-- Insert Inventory for all products (56 products)
 INSERT INTO inventory (store_id, product_id, quantity, updated_at) VALUES
 (1, 1, 15, NOW()), (1, 2, 12, NOW()), (1, 3, 8, NOW()), (1, 4, 6, NOW()),
 (1, 5, 20, NOW()), (1, 6, 18, NOW()), (1, 7, 25, NOW()), (1, 8, 10, NOW()),
@@ -188,118 +188,123 @@ INSERT INTO inventory (store_id, product_id, quantity, updated_at) VALUES
 (1, 37, 25, NOW()), (1, 38, 22, NOW()), (1, 39, 19, NOW()), (1, 40, 30, NOW()),
 (1, 41, 35, NOW()), (1, 42, 28, NOW()), (1, 43, 7, NOW()), (1, 44, 9, NOW()),
 (1, 45, 13, NOW()), (1, 46, 16, NOW()), (1, 47, 11, NOW()), (1, 48, 14, NOW()),
-(1, 49, 4, NOW()), (1, 50, 8, NOW());
+(1, 49, 4, NOW()), (1, 50, 8, NOW()), (1, 51, 12, NOW()), (1, 52, 18, NOW()),
+(1, 53, 6, NOW()), (1, 54, 10, NOW()), (1, 55, 15, NOW()), (1, 56, 9, NOW());
 
--- Insert Product Images (main images for each product)
+-- Insert Product Images (main images for 56 products)
 INSERT INTO product_image (product_id, image_url, is_main) VALUES
-(1, 'https://placehold.co/600x400', 1),
-(2, 'https://placehold.co/600x400', 1),
-(3, 'https://placehold.co/600x400', 1),
-(4, 'https://placehold.co/600x400', 1),
-(5, 'https://placehold.co/600x400', 1),
-(6, 'https://placehold.co/600x400', 1),
-(7, 'https://placehold.co/600x400', 1),
-(8, 'https://placehold.co/600x400', 1),
-(9, 'https://placehold.co/600x400', 1),
-(10, 'https://placehold.co/600x400', 1),
-(11, 'https://placehold.co/600x400', 1),
-(12, 'https://placehold.co/600x400', 1),
-(13, 'https://placehold.co/600x400', 1),
-(14, 'https://placehold.co/600x400', 1),
-(15, 'https://placehold.co/600x400', 1),
-(16, 'https://placehold.co/600x400', 1),
-(17, 'https://placehold.co/600x400', 1),
-(18, 'https://placehold.co/600x400', 1),
-(19, 'https://placehold.co/600x400', 1),
-(20, 'https://placehold.co/600x400', 1),
-(21, 'https://placehold.co/600x400', 1),
-(22, 'https://placehold.co/600x400', 1),
-(23, 'https://placehold.co/600x400', 1),
-(24, 'https://placehold.co/600x400', 1),
-(25, 'https://placehold.co/600x400', 1),
-(26, 'https://placehold.co/600x400', 1),
-(27, 'https://placehold.co/600x400', 1),
-(28, 'https://placehold.co/600x400', 1),
-(29, 'https://placehold.co/600x400', 1),
-(30, 'https://placehold.co/600x400', 1),
-(31, 'https://placehold.co/600x400', 1),
-(32, 'https://placehold.co/600x400', 1),
-(33, 'https://placehold.co/600x400', 1),
-(34, 'https://placehold.co/600x400', 1),
-(35, 'https://placehold.co/600x400', 1),
-(36, 'https://placehold.co/600x400', 1),
-(37, 'https://placehold.co/600x400', 1),
-(38, 'https://placehold.co/600x400', 1),
-(39, 'https://placehold.co/600x400', 1),
-(40, 'https://placehold.co/600x400', 1),
-(41, 'https://placehold.co/600x400', 1),
-(42, 'https://placehold.co/600x400', 1),
-(43, 'https://placehold.co/600x400', 1),
-(44, 'https://placehold.co/600x400', 1),
-(45, 'https://placehold.co/600x400', 1),
-(46, 'https://placehold.co/600x400', 1),
-(47, 'https://placehold.co/600x400', 1),
-(48, 'https://placehold.co/600x400', 1),
-(49, 'https://placehold.co/600x400', 1),
-(50, 'https://placehold.co/600x400', 1);
+(1, 'https://placehold.co/600x400', 1), (2, 'https://placehold.co/600x400', 1),
+(3, 'https://placehold.co/600x400', 1), (4, 'https://placehold.co/600x400', 1),
+(5, 'https://placehold.co/600x400', 1), (6, 'https://placehold.co/600x400', 1),
+(7, 'https://placehold.co/600x400', 1), (8, 'https://placehold.co/600x400', 1),
+(9, 'https://placehold.co/600x400', 1), (10, 'https://placehold.co/600x400', 1),
+(11, 'https://placehold.co/600x400', 1), (12, 'https://placehold.co/600x400', 1),
+(13, 'https://placehold.co/600x400', 1), (14, 'https://placehold.co/600x400', 1),
+(15, 'https://placehold.co/600x400', 1), (16, 'https://placehold.co/600x400', 1),
+(17, 'https://placehold.co/600x400', 1), (18, 'https://placehold.co/600x400', 1),
+(19, 'https://placehold.co/600x400', 1), (20, 'https://placehold.co/600x400', 1),
+(21, 'https://placehold.co/600x400', 1), (22, 'https://placehold.co/600x400', 1),
+(23, 'https://placehold.co/600x400', 1), (24, 'https://placehold.co/600x400', 1),
+(25, 'https://placehold.co/600x400', 1), (26, 'https://placehold.co/600x400', 1),
+(27, 'https://placehold.co/600x400', 1), (28, 'https://placehold.co/600x400', 1),
+(29, 'https://placehold.co/600x400', 1), (30, 'https://placehold.co/600x400', 1),
+(31, 'https://placehold.co/600x400', 1), (32, 'https://placehold.co/600x400', 1),
+(33, 'https://placehold.co/600x400', 1), (34, 'https://placehold.co/600x400', 1),
+(35, 'https://placehold.co/600x400', 1), (36, 'https://placehold.co/600x400', 1),
+(37, 'https://placehold.co/600x400', 1), (38, 'https://placehold.co/600x400', 1),
+(39, 'https://placehold.co/600x400', 1), (40, 'https://placehold.co/600x400', 1),
+(41, 'https://placehold.co/600x400', 1), (42, 'https://placehold.co/600x400', 1),
+(43, 'https://placehold.co/600x400', 1), (44, 'https://placehold.co/600x400', 1),
+(45, 'https://placehold.co/600x400', 1), (46, 'https://placehold.co/600x400', 1),
+(47, 'https://placehold.co/600x400', 1), (48, 'https://placehold.co/600x400', 1),
+(49, 'https://placehold.co/600x400', 1), (50, 'https://placehold.co/600x400', 1),
+(51, 'https://placehold.co/600x400', 1), (52, 'https://placehold.co/600x400', 1),
+(53, 'https://placehold.co/600x400', 1), (54, 'https://placehold.co/600x400', 1),
+(55, 'https://placehold.co/600x400', 1), (56, 'https://placehold.co/600x400', 1);
 
--- Insert Sample Reviews with Different Ratings
+-- Insert Sample Reviews with Different Ratings for New Categories
 INSERT INTO review (user_id, product_id, rating, comment, created_at) VALUES
--- 5-star reviews
+-- 5-star reviews for Laptop category
 (1, 1, 5, 'Excellent laptop! Fast performance and beautiful display. Highly recommend for professionals.', NOW()),
-(2, 21, 5, 'Best graphics card I ever owned! Runs all games at max settings 1440p.', NOW()),
-(3, 27, 5, 'Intel i9-13900K is a beast! Perfect for video editing and gaming.', NOW()),
-(4, 15, 5, 'Amazing monitor! 144Hz gaming is incredible, colors are perfect.', NOW()),
-(5, 37, 5, 'Lightning fast SSD! Boot time is under 10 seconds.', NOW()),
+(2, 3, 5, 'Best gaming laptop! Runs all games at max settings.', NOW()),
+(3, 2, 5, 'Perfect business laptop, premium build quality!', NOW()),
+
+-- 5-star reviews for Headset category
+(4, 9, 5, 'Amazing gaming headset! THX spatial audio is incredible.', NOW()),
+(5, 10, 5, 'Professional headset with crystal clear microphone!', NOW()),
+
+-- 5-star reviews for Phone category
+(1, 15, 5, 'Best Android phone! S Pen is amazing for productivity.', NOW()),
+(2, 17, 5, 'Gaming phone with incredible performance!', NOW()),
+
+-- 5-star reviews for TV category
+(3, 23, 5, 'Stunning QLED TV! HDR10+ colors are perfect.', NOW()),
+(4, 25, 5, 'Large gaming monitor with 144Hz is incredible!', NOW()),
+
+-- 5-star reviews for Display category
+(5, 29, 5, 'Professional 4K monitor! Perfect for design work.', NOW()),
+(1, 31, 5, 'Super ultrawide gaming monitor is immersive!', NOW()),
+
+-- 5-star reviews for HDD category
+(2, 36, 5, 'Reliable hard drive! Great for storage expansion.', NOW()),
+(3, 41, 5, 'Lightning fast NVMe SSD! Boot time is under 10 seconds.', NOW()),
+
+-- 5-star reviews for UPC Scan category
+(4, 43, 5, 'Excellent barcode scanner! 1D/2D support is perfect.', NOW()),
+(5, 44, 5, 'Gaming-themed scanner works great for retail!', NOW()),
+
+-- 5-star reviews for Tools category
+(1, 50, 5, 'Complete PC building toolkit! Has everything I need.', NOW()),
+(2, 51, 5, 'Professional tools for PC assembly!', NOW()),
 
 -- 4-star reviews
-(1, 2, 4, 'Great business laptop, battery life could be better though.', NOW()),
-(2, 22, 4, 'Very powerful GPU, runs hot under load but manageable.', NOW()),
-(3, 28, 4, 'Solid CPU for gaming, good value for money.', NOW()),
-(4, 16, 4, 'Good gaming monitor, stand could be more adjustable.', NOW()),
-(5, 38, 4, 'Fast SSD, price is a bit high but worth it.', NOW()),
+(3, 4, 4, 'Great content creation laptop, 4K display is beautiful.', NOW()),
+(4, 11, 4, 'Good wireless headset, ANC works well.', NOW()),
+(5, 16, 4, 'Business smartphone with enterprise features.', NOW()),
+(1, 24, 4, 'Professional 4K monitor for office work.', NOW()),
+(2, 30, 4, 'Ultrawide monitor, great for multitasking.', NOW()),
+(3, 37, 4, 'NAS-optimized hard drive, reliable storage.', NOW()),
+(4, 42, 4, 'High-speed Gen4 NVMe SSD for gaming.', NOW()),
+(5, 45, 4, 'Professional document scanner, fast scanning.', NOW()),
+(1, 52, 4, 'Magnetic screwdriver set, great for electronics.', NOW()),
 
 -- 3-star reviews
-(1, 3, 3, 'Decent gaming laptop, fan noise is noticeable under load.', NOW()),
-(2, 23, 4, 'Good mid-range GPU, handles most games well at 1080p.', NOW()),
-(3, 29, 3, 'Average CPU, gets the job done for basic tasks.', NOW()),
-(4, 17, 3, 'Curved monitor takes getting used to, good for gaming though.', NOW()),
-(5, 39, 3, 'Decent SSD performance, had some driver issues initially.', NOW()),
+(2, 5, 3, 'Decent convertible laptop, battery life could be better.', NOW()),
+(3, 12, 4, 'Wireless gaming headset with vibration is cool.', NOW()),
+(4, 18, 3, 'Gaming phone with dual batteries, heavy though.', NOW()),
+(5, 26, 3, 'Curved gaming monitor, takes getting used to.', NOW()),
+(1, 32, 3, '4K professional display, good for business.', NOW()),
+(2, 38, 3, 'SATA SSD is reliable but slower than NVMe.', NOW()),
+(3, 46, 3, 'Point-of-sale scanner, works as expected.', NOW()),
+(4, 53, 3, 'Gaming device repair tools, decent quality.', NOW()),
 
 -- 2-star reviews
-(1, 4, 2, 'Overpriced for what you get, thermal throttling issues.', NOW()),
-(2, 24, 3, 'AMD GPU is okay, driver support needs improvement.', NOW()),
-(3, 30, 2, 'Ryzen 9 runs very hot, stock cooler is inadequate.', NOW()),
-(4, 18, 4, 'Great 4K monitor, refresh rate is only 60Hz though.', NOW()),
-(5, 40, 2, 'SATA SSD is slow compared to NVMe, but reliable.', NOW()),
+(5, 6, 2, 'Ultrabook with OLED display, overpriced for specs.', NOW()),
+(1, 13, 2, 'True wireless earbuds, battery life is poor.', NOW()),
+(2, 19, 2, 'Premium business hybrid, not worth the price.', NOW()),
+(3, 27, 2, 'Business display with video conferencing, limited features.', NOW()),
+(4, 33, 2, 'Super ultrawide monitor, too expensive.', NOW()),
+(5, 39, 2, 'Reliable storage, but slow compared to modern drives.', NOW()),
+(1, 47, 2, 'Industrial-grade scanner, complicated setup.', NOW()),
+(2, 54, 2, 'Hardware diagnostic kit, software is buggy.', NOW()),
 
 -- 1-star reviews
-(1, 5, 2, 'Poor build quality, hinge broke after 6 months.', NOW()),
-(2, 25, 2, 'Disappointing performance for the price point.', NOW()),
-(3, 31, 1, 'CPU arrived DOA, terrible customer service.', NOW()),
-(4, 19, 2, 'Monitor has backlight bleed, poor QC.', NOW()),
-(5, 41, 1, 'Hard drive failed after 2 months, lost all data.', NOW()),
+(3, 7, 1, 'Affordable laptop, poor build quality, hinge broke.', NOW()),
+(4, 14, 1, 'Gaming laptop with AMD processor, overheating issues.', NOW()),
+(5, 20, 1, 'Android tablet, slow performance for the price.', NOW()),
+(1, 28, 1, 'Gaming monitor with 1ms response, terrible colors.', NOW()),
+(2, 34, 1, 'Curved business monitor, backlight bleed issues.', NOW()),
+(3, 40, 1, 'High-capacity storage, failed after 1 month.', NOW()),
+(4, 48, 1, 'Enterprise barcode scanner, poor customer support.', NOW()),
+(5, 55, 1, 'PC maintenance kit, tools broke easily.', NOW()),
 
--- More reviews for better testing
-(1, 6, 4, 'Great ultrabook, OLED display is stunning!', NOW()),
-(2, 26, 3, 'Budget GPU that handles esports games well.', NOW()),
-(3, 32, 4, 'Good value CPU for budget gaming builds.', NOW()),
-(4, 20, 3, 'Basic office monitor, gets the job done.', NOW()),
-(5, 42, 3, 'Reliable hard drive, good for storage expansion.', NOW()),
-
--- Additional mixed reviews
-(1, 7, 3, 'Budget laptop with decent performance, keyboard is mediocre.', NOW()),
-(2, 33, 5, 'Best RAM I ever bought! RGB lighting is awesome.', NOW()),
-(3, 34, 4, 'High-end RAM with great performance, expensive though.', NOW()),
-(4, 43, 4, 'Excellent motherboard for Intel builds, BIOS is user-friendly.', NOW()),
-(5, 44, 3, 'Good AMD motherboard, VRM could be stronger.', NOW()),
-
--- Final batch of reviews
-(1, 45, 4, 'Solid B760 motherboard, great for budget builds.', NOW()),
-(2, 46, 3, 'Decent B650 motherboard, lacks some features.', NOW()),
-(3, 47, 5, 'Best PSU I ever owned! Fully modular and efficient.', NOW()),
-(4, 48, 3, 'Basic PSU that works, cables are not modular.', NOW()),
-(5, 49, 4, 'Expensive but worth it for high-end builds.', NOW());
+-- Additional mixed reviews for testing
+(1, 8, 4, 'Gaming laptop with AMD processor, good value.', NOW()),
+(2, 21, 3, 'Handheld gaming device, innovative but heavy.', NOW()),
+(3, 22, 3, 'Premium Android tablet, great for productivity.', NOW()),
+(4, 35, 4, 'QHD gaming monitor, excellent performance.', NOW()),
+(5, 49, 3, 'Business barcode scanner, gets the job done.', NOW()),
+(1, 56, 4, 'Mobile device repair toolkit, comprehensive set.', NOW());
 
 -- Create View for Product Average Rating (for easier querying)
 CREATE OR REPLACE VIEW product_rating_view AS

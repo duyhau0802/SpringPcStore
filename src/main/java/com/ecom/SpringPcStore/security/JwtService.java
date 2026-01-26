@@ -47,8 +47,13 @@ public class JwtService {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    public Boolean isTokenExpired(String token) {
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (Exception e) {
+            System.out.println("Error checking token expiry: " + e.getMessage());
+            return true; // Assume expired if there's an error
+        }
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

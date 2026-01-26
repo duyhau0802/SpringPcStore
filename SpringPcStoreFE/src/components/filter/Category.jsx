@@ -28,18 +28,14 @@ const FilterCategory = ({ onFilterChange }) => {
       console.error('Failed to load categories:', error);
       // Fallback to tech categories if API fails
       setCategories([
-        { id: 1, name: "Laptops" },
-        { id: 2, name: "Desktop PCs" },
-        { id: 3, name: "Monitors" },
-        { id: 4, name: "Graphics Cards" },
-        { id: 5, name: "Processors" },
-        { id: 6, name: "Memory (RAM)" },
-        { id: 7, name: "Storage (SSD/HDD)" },
-        { id: 8, name: "Motherboards" },
-        { id: 9, name: "Power Supplies" },
-        { id: 10, name: "Computer Cases" },
-        { id: 11, name: "Cooling Systems" },
-        { id: 12, name: "Gaming Peripherals" }
+        { id: 1, name: "Laptop" },
+        { id: 2, name: "Headset" },
+        { id: 3, name: "Phone" },
+        { id: 4, name: "TV" },
+        { id: 5, name: "Display" },
+        { id: 6, name: "HDD" },
+        { id: 7, name: "UPC Scan" },
+        { id: 8, name: "Tools" }
       ]);
     } finally {
       setLoading(false);
